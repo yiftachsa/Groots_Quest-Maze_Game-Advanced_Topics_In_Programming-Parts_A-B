@@ -14,5 +14,9 @@ public class BestFirstSearch extends BreadthFirstSearch{
         closed = new HashSet<>();
         this.NumberOfNodesEvaluated = 0;
         isCostConsidered = true;
+
     }
+
+
+
 }

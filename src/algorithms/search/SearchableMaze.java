@@ -10,7 +10,7 @@ public class SearchableMaze implements ISearchable {
     private Maze maze;
     //###NEED TO CHANGE THOSE
     private static int DIRECTIONAL_STRAIGHT_MOVE_COST  = 10;
-    private static int DIRECTIONAL_DIAGONAL_MOVE_COST  = 12;
+    private static int DIRECTIONAL_DIAGONAL_MOVE_COST  = 14; //equivalent to sqrt(2) - according to pythagoras theorem
 
     public SearchableMaze(Maze maze) {
         this.maze = maze;
