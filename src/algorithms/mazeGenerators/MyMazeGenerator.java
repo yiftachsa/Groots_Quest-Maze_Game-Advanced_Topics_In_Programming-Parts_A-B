@@ -13,7 +13,7 @@ public class MyMazeGenerator extends AMazeGenerator{
 
     private void selectGoalPosition(Maze maze) {
         Position tempGoalPosition = new Position((int)Math.floor(Math.random() * Math.floor(maze.getRowLength())),(int)Math.floor(Math.random() * Math.floor(maze.getColumnLength())));
-        while (maze.getValue(tempGoalPosition) == 1){
+        while (maze.getValue(tempGoalPosition) == 1 || tempGoalPosition.equals(maze.getStartPosition())){
             tempGoalPosition = new Position((int)Math.floor(Math.random() * Math.floor(maze.getRowLength())),(int)Math.floor(Math.random() * Math.floor(maze.getColumnLength())));
         }
         maze.setGoalPosition(tempGoalPosition);
