@@ -10,8 +10,15 @@ public class SearchableMaze implements ISearchable {
     private Maze maze;
     //###NEED TO CHANGE THOSE
     private static int DIRECTIONAL_STRAIGHT_MOVE_COST  = 10;
-    private static int DIRECTIONAL_DIAGONAL_MOVE_COST  = 15;
+    private static int DIRECTIONAL_DIAGONAL_MOVE_COST  = 12;
 
+    public SearchableMaze(Maze maze) {
+        this.maze = maze;
+    }
+
+    public Maze getMaze() {
+        return maze;
+    }
 
     @Override
     public AState getStartState() {
@@ -20,7 +27,7 @@ public class SearchableMaze implements ISearchable {
 
     @Override
     public AState getGoalState() {
-        return new MazeState(this.maze, this.maze.getStartPosition());
+        return new MazeState(this.maze, this.maze.getGoalPosition());
     }
 
     @Override
@@ -32,16 +39,18 @@ public class SearchableMaze implements ISearchable {
         boolean directionalState=true;
         CheckNeighborsVertically(mazeState, allPossibleStates, verticalStates,directionalState);
         CheckNeighborsHorizontally(mazeState, allPossibleStates, horizontalStates,directionalState);
-        int count = verticalStates.size();
+
         directionalState=false;
-        while (count!=0)
+        while (verticalStates.size()>0)
         {
-            CheckNeighborsHorizontally(mazeState, allPossibleStates ,allPossibleStates,directionalState);
+            CheckNeighborsHorizontally((MazeState)verticalStates.get(0), allPossibleStates ,allPossibleStates ,directionalState);
+            verticalStates.remove(0);
         }
-        count = horizontalStates.size();
-        while (count!=0)
+
+        while (horizontalStates.size()>0)
         {
-            CheckNeighborsVertically(mazeState, allPossibleStates ,allPossibleStates,directionalState);
+            CheckNeighborsVertically((MazeState)horizontalStates.get(0), allPossibleStates ,allPossibleStates,directionalState);
+            horizontalStates.remove(0);
         }
         return  allPossibleStates;
     }
@@ -69,7 +78,7 @@ public class SearchableMaze implements ISearchable {
         if (this.maze.isLegalMove(position)) {
             /*maybe need deep copy*/
             Maze newMaze = mazeState.getMaze();
-            newMaze.setValue(position, 2);
+//            newMaze.setValue(position, 2);
             //###If directionalStates == false so not a direct move. need to update the cost!!!!###
             MazeState newMazeState = new MazeState(newMaze, position);
             if (!states.contains(newMazeState)) {

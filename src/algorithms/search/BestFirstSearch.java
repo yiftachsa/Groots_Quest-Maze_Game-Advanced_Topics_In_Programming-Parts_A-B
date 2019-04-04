@@ -12,5 +12,7 @@ public class BestFirstSearch extends BreadthFirstSearch{
     protected void initializeDataStructures() {
         opened = new PriorityQueue<>();
         closed = new HashSet<>();
+        this.NumberOfNodesEvaluated = 0;
+        isCostConsidered = true;
     }
 }
