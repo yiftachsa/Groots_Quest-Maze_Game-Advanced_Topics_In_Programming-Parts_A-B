@@ -1,6 +1,5 @@
 package algorithms.mazeGenerators;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.XPath;
 
 import java.util.PrimitiveIterator;
 import java.util.Random;
@@ -54,7 +53,7 @@ public class SimpleMazeGenerator extends AMazeGenerator{
 
     private int goalFunction(Maze maze)
     {
-        return (int)Math.pow(maze.getColumnLength()+maze.getRowLength(), 0.5);
+        return (int)Math.pow(maze.getColumnLength()+maze.getRowLength(), 0.75);
     }
 
     private Maze PathCreate (Maze maze){

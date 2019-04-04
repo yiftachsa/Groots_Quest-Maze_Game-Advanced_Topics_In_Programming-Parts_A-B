@@ -124,6 +124,22 @@ public class Maze {
         }
     }
 
+    public void print2 () {
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[i].length; j++) {
+                if (i == startPosition.getRowIndex() && j == startPosition.getColumnIndex()) {//startPosition
+                    System.out.print(" " + "\u001B[44m" + " ");
+                } else if (i == goalPosition.getRowIndex() && j == goalPosition.getColumnIndex()) {//goalPosition
+                    System.out.print(" " + "\u001B[44m" + " ");
+                } else if (maze[i][j] == 1) System.out.print(" " + "\u001B[45m" + " ");
+                else System.out.print(" " + "\u001B[107m" + " ");
+            }
+            System.out.println(" " + "\u001B[107m");
+        }
+
+    }
+
+
     @Override
     public String toString() {
         return "Maze{" +
