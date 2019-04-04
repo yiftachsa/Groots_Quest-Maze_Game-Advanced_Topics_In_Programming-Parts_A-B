@@ -12,6 +12,7 @@ public class DepthFirstSearch extends ASearchingAlgorithm{
 
     private boolean isCostConsidered;
 
+
     public DepthFirstSearch() {
         super("DepthFirstSearch");
     }
