@@ -7,7 +7,6 @@ public class DepthFirstSearch extends ASearchingAlgorithm{
 
     @Override
     public AState solve(ISearchable searchable) {
-
         return null;
     }
 }
