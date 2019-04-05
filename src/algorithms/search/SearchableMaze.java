@@ -8,28 +8,49 @@ import java.util.ArrayList;
 public class SearchableMaze implements ISearchable {
 
     private Maze maze;
-    //###NEED TO CHANGE THOSE
-    private static int DIRECTIONAL_STRAIGHT_MOVE_COST  = 10;
-    private static int DIRECTIONAL_DIAGONAL_MOVE_COST  = 14; //equivalent to sqrt(2) - according to pythagoras theorem
+    //Terrain cost analysis - calculates distance
+    private final int DIRECTIONAL_STRAIGHT_MOVE_COST  = 10;
+    private final int DIRECTIONAL_DIAGONAL_MOVE_COST  = 14; //equivalent to sqrt(2) - according to pythagoras theorem
 
+    /**
+     * Constructor
+     * @param maze - Maze - the maze that will be searched upon
+     */
     public SearchableMaze(Maze maze) {
         this.maze = maze;
     }
 
+    /**
+     * Returns maze
+     * @return - Maze
+     */
     public Maze getMaze() {
         return maze;
     }
 
+    /**
+     * Returns the maze's start state
+     * @return - AState
+     */
     @Override
     public AState getStartState() {
         return new MazeState(this.maze, this.maze.getStartPosition());
     }
 
+    /**
+     * Returns the maze's goal state
+     * @return - AState
+     */
     @Override
     public AState getGoalState() {
         return new MazeState(this.maze, this.maze.getGoalPosition());
     }
 
+    /**
+     *
+     * @param state
+     * @return
+     */
     @Override
     public ArrayList<AState> getAllPossibleState(AState state) {
         ArrayList<AState> allPossibleStates= new ArrayList<>();
@@ -55,6 +76,13 @@ public class SearchableMaze implements ISearchable {
         return  allPossibleStates;
     }
 
+    /**
+     *
+     * @param mazeState
+     * @param states
+     * @param verticalStates
+     * @param directionalState
+     */
     private void CheckNeighborsVertically(MazeState mazeState , ArrayList<AState> states, ArrayList<AState> verticalStates, boolean directionalState){
         /*up*/
         Position positionUp = new Position(mazeState.getCurrentPosition().getRowIndex()-1,mazeState.getCurrentPosition().getColumnIndex());
@@ -64,6 +92,13 @@ public class SearchableMaze implements ISearchable {
         addLegalState(mazeState, states, verticalStates, positionDown , directionalState);
     }
 
+    /**
+     *
+     * @param mazeState
+     * @param states
+     * @param horizontalStates
+     * @param directionalState
+     */
     private void CheckNeighborsHorizontally(MazeState mazeState , ArrayList<AState> states, ArrayList<AState> horizontalStates , boolean directionalState){
         /*right*/
         Position positionRight = new Position(mazeState.getCurrentPosition().getRowIndex(),mazeState.getCurrentPosition().getColumnIndex()+1);
@@ -74,6 +109,14 @@ public class SearchableMaze implements ISearchable {
 
     }
 
+    /**
+     *
+     * @param mazeState
+     * @param states
+     * @param directionalStates
+     * @param position
+     * @param directionalState
+     */
     private void addLegalState(MazeState mazeState, ArrayList<AState> states,ArrayList<AState> directionalStates, Position position, boolean directionalState) {
         if (this.maze.isLegalMove(position)) {
             /*maybe need deep copy*/

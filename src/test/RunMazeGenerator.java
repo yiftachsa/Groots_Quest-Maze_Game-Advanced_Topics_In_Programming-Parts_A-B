@@ -6,8 +6,8 @@ import java.util.TreeSet;
 
 public class RunMazeGenerator {
     public static void main(String[] args) {
-        testMazeGenerator(new EmptyMazeGenerator());
-        testMazeGenerator(new SimpleMazeGenerator());
+        //testMazeGenerator(new EmptyMazeGenerator());
+        //testMazeGenerator(new SimpleMazeGenerator());
         testMazeGenerator(new MyMazeGenerator());
     }
     private static void testMazeGenerator(IMazeGenerator mazeGenerator) {
@@ -17,9 +17,9 @@ public class RunMazeGenerator {
        System.out.println(String.format("Maze generation time(ms): %s",
                 mazeGenerator.measureAlgorithmTimeMillis(1000/*rows*/,1000/*columns*/)));
         // generate another maze
-        Maze maze = mazeGenerator.generate(1000/*rows*/, 1000/*columns*/);
+        Maze maze = mazeGenerator.generate(100/*rows*/, 100/*columns*/);
         // prints the maze
-      //  maze.print();
+        maze.coloredPrint();
         // get the maze entrance
         Position startPosition = maze.getStartPosition();
         // print the position
