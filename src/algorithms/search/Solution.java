@@ -4,12 +4,23 @@ import java.util.ArrayList;
 
 public class Solution {
 
+    /**
+     * The last state in the solution
+     */
     AState solutionState;
 
+    /**
+     * Constructor
+     * @param solutionState - AState - the last state in the solution
+     */
     public Solution(AState solutionState) {
         this.solutionState = solutionState;
     }
 
+    /**
+     * Returns a list of all the states that lead to the final state and together to the solution
+     * @return - ArrayList<AState>
+     */
     public ArrayList<AState> getSolutionPath(){
         ArrayList<AState> solutionPath = new ArrayList<>();
         AState parentState = solutionState.getParent();
@@ -21,6 +32,5 @@ public class Solution {
         }
         return solutionPath;
     }
-
 
 }

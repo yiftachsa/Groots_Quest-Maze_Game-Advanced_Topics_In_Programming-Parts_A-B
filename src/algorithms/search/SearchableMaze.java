@@ -8,9 +8,15 @@ import java.util.ArrayList;
 public class SearchableMaze implements ISearchable {
 
     private Maze maze;
-    //Terrain cost analysis - calculates distance
+    /**
+     * Terrain cost analysis - calculates distance for a straight move
+     */
     private final int DIRECTIONAL_STRAIGHT_MOVE_COST  = 10;
-    private final int DIRECTIONAL_DIAGONAL_MOVE_COST  = 14; //equivalent to sqrt(2) - according to pythagoras theorem
+    /**
+     * Terrain cost analysis - calculates distance for a diagonal move
+     * Equivalent to sqrt(200) - according to pythagoras theorem
+     */
+    private final int DIRECTIONAL_DIAGONAL_MOVE_COST  = 14;
 
     /**
      * Constructor
@@ -21,67 +27,59 @@ public class SearchableMaze implements ISearchable {
     }
 
     /**
-     * Returns maze
+     * Returns this maze
      * @return - Maze
      */
     public Maze getMaze() {
         return maze;
     }
 
-    /**
-     * Returns the maze's start state
-     * @return - AState
-     */
+
     @Override
     public AState getStartState() {
         return new MazeState(this.maze, this.maze.getStartPosition());
     }
 
-    /**
-     * Returns the maze's goal state
-     * @return - AState
-     */
     @Override
     public AState getGoalState() {
         return new MazeState(this.maze, this.maze.getGoalPosition());
     }
 
-    /**
-     *
-     * @param state
-     * @return
-     */
+
     @Override
     public ArrayList<AState> getAllPossibleState(AState state) {
         ArrayList<AState> allPossibleStates= new ArrayList<>();
         ArrayList<AState> verticalStates = new ArrayList<>();
         ArrayList<AState> horizontalStates = new ArrayList<>();
         MazeState mazeState = (MazeState)state;
-        boolean directionalState=true;
-        CheckNeighborsVertically(mazeState, allPossibleStates, verticalStates,directionalState);
-        CheckNeighborsHorizontally(mazeState, allPossibleStates, horizontalStates,directionalState);
+        //Check Neighbors in straight Moves
+        boolean isStraightDirectionalMove=true;
+        CheckNeighborsVertically(mazeState, allPossibleStates, verticalStates,isStraightDirectionalMove);
+        CheckNeighborsHorizontally(mazeState, allPossibleStates, horizontalStates,isStraightDirectionalMove);
 
-        directionalState=false;
+        //Check Neighbors in diagonal Moves
+        isStraightDirectionalMove=false;
+
         while (verticalStates.size()>0)
         {
-            CheckNeighborsHorizontally((MazeState)verticalStates.get(0), allPossibleStates ,allPossibleStates ,directionalState);
+            CheckNeighborsHorizontally((MazeState)verticalStates.get(0), allPossibleStates ,allPossibleStates ,isStraightDirectionalMove);
             verticalStates.remove(0);
         }
 
         while (horizontalStates.size()>0)
         {
-            CheckNeighborsVertically((MazeState)horizontalStates.get(0), allPossibleStates ,allPossibleStates,directionalState);
+            CheckNeighborsVertically((MazeState)horizontalStates.get(0), allPossibleStates ,allPossibleStates,isStraightDirectionalMove);
             horizontalStates.remove(0);
         }
         return  allPossibleStates;
     }
 
     /**
-     *
-     * @param mazeState
-     * @param states
-     * @param verticalStates
-     * @param directionalState
+     * Receives a maze state and adds ONLY his legal vertical neighboring positions to the list of successors
+     * @param mazeState - MazeState
+     * @param states - ArrayList<AState>
+     * @param verticalStates - ArrayList<AState>
+     * @param directionalState - boolean
      */
     private void CheckNeighborsVertically(MazeState mazeState , ArrayList<AState> states, ArrayList<AState> verticalStates, boolean directionalState){
         /*up*/
@@ -93,11 +91,11 @@ public class SearchableMaze implements ISearchable {
     }
 
     /**
-     *
-     * @param mazeState
-     * @param states
-     * @param horizontalStates
-     * @param directionalState
+     * Receives a maze state and adds ONLY his legal horizontal neighboring positions to the list of successors
+     * @param mazeState - MazeState
+     * @param states - ArrayList<AState>
+     * @param horizontalStates - ArrayList<AState>
+     * @param directionalState - boolean
      */
     private void CheckNeighborsHorizontally(MazeState mazeState , ArrayList<AState> states, ArrayList<AState> horizontalStates , boolean directionalState){
         /*right*/
@@ -110,37 +108,30 @@ public class SearchableMaze implements ISearchable {
     }
 
     /**
-     *
-     * @param mazeState
-     * @param states
-     * @param directionalStates
-     * @param position
-     * @param directionalState
+     * Receives a maze state and adds a new state to his successors if the position that was received is legal
+     * @param mazeState - MazeState
+     * @param states - ArrayList<AState>
+     * @param directionalStates - ArrayList<AState>
+     * @param position - Position
+     * @param directionalState - boolean
      */
     private void addLegalState(MazeState mazeState, ArrayList<AState> states,ArrayList<AState> directionalStates, Position position, boolean directionalState) {
         if (this.maze.isLegalMove(position)) {
-            /*maybe need deep copy*/
+            //###TODO: maybe need a deep copy
             Maze newMaze = mazeState.getMaze();
-//            newMaze.setValue(position, 2);
-            //###If directionalStates == false so not a direct move. need to update the cost!!!!###
             MazeState newMazeState = new MazeState(newMaze, position);
             if (!states.contains(newMazeState)) {
                 states.add(newMazeState);
-                if(directionalState == true){
+                if(directionalState){
                     directionalStates.add(newMazeState);
                     //update cost to be suitable for straight directional step
-                    //###NEED TO CHECK IF THIS IS CORRECT
-                    //###MAYBE THERE IS NO NEED TO ADD THE PARENT COST,ONLY THE DIRECTION OF WHICH THE MOVE WAS MADE
                     newMazeState.setCost(DIRECTIONAL_STRAIGHT_MOVE_COST);
-                } else {//###MAYBE THE ELSE SHOULD BE HERE(OR ALSO  HERE)
+                } else {
+                    //update cost to be suitable for diagonal directional step
                     newMazeState.setCost(DIRECTIONAL_DIAGONAL_MOVE_COST);
                 }
-            } else { //###MAYBE SHOULD NOT BE ELSE
-                //###CHECK IF THE CURRENT COST IS LOWER THEN PREVIOUS COST AND IF SO UPDATE THE COST(IN A DIAGONAL MOVE)
             }
         }
     }
-
-
 
 }
