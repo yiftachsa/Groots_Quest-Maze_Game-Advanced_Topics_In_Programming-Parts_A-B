@@ -3,6 +3,7 @@ package algorithms.mazeGenerators;
 import java.util.ArrayList;
 
 public class MyMazeGenerator extends AMazeGenerator{
+
     @Override
     public Maze generate(int row, int column) {
         Maze maze=super.generateEmptyMaze(row , column);
@@ -11,14 +12,11 @@ public class MyMazeGenerator extends AMazeGenerator{
         return maze;
     }
 
-    private void selectGoalPosition(Maze maze) {
-        Position tempGoalPosition = new Position((int)Math.floor(Math.random() * Math.floor(maze.getRowLength())),(int)Math.floor(Math.random() * Math.floor(maze.getColumnLength())));
-        while (maze.getValue(tempGoalPosition) == 1 || tempGoalPosition.equals(maze.getStartPosition())){
-            tempGoalPosition = new Position((int)Math.floor(Math.random() * Math.floor(maze.getRowLength())),(int)Math.floor(Math.random() * Math.floor(maze.getColumnLength())));
-        }
-        maze.setGoalPosition(tempGoalPosition);
-    }
-
+    /**
+     * Receives an empty maze, generate a maze using Randomize Prim algorithm and returns that maze
+     * @param maze - Maze
+     * @return - Maze - Randomize Prim generated maze
+     */
     private Maze RandomizePrim(Maze maze)
     {
         maze= fillMaze(maze);
@@ -49,6 +47,14 @@ public class MyMazeGenerator extends AMazeGenerator{
         return maze;
     }
 
+    /**
+     * Creates a path through currentFrontier in the maze. Adds the partOfPathPosition to the maze and adds it's adjacent to the frontier.
+     * @param maze - Maze
+     * @param frontier - ArrayList<Position>
+     * @param currentFrontier - Position
+     * @param partOfPathPosition - Position
+     * @return - boolean
+     */
     private boolean needToBeAdded(Maze maze, ArrayList<Position> frontier, Position currentFrontier, Position partOfPathPosition) {
         if (partOfPathPosition != null){
             maze.setValue(partOfPathPosition, 0);
@@ -59,7 +65,12 @@ public class MyMazeGenerator extends AMazeGenerator{
         return false;
     }
 
-
+    /**
+     * Adds all the adjacent positions to the given position that need to be added to the frontier
+     * @param maze - Maze
+     * @param frontier - ArrayList<Position>
+     * @param currentPosition - Position
+     */
     private void addAdjacent(Maze maze, ArrayList<Position> frontier, Position currentPosition) {
 
         /*up Adjacent*/
@@ -89,7 +100,6 @@ public class MyMazeGenerator extends AMazeGenerator{
                 frontier.add(adjacent);
             }
         }
-
         /*right Adjacent*/
         if(currentPosition.getColumnIndex()+1 < maze.getColumnLength() && maze.getValue(currentPosition.getRowIndex(),currentPosition.getColumnIndex()+1) != 0)
         {
@@ -101,6 +111,11 @@ public class MyMazeGenerator extends AMazeGenerator{
         }
     }
 
+    /**
+     * Receives a maze and fills it with walls (replaces all it's values with 1)
+     * @param maze - Maze
+     * @return - Maze - maze full of walls
+     */
     private Maze fillMaze(Maze maze) {
         if(maze!=null) {
             for (int i = 0; i < maze.getRowLength(); i++) {
@@ -113,6 +128,13 @@ public class MyMazeGenerator extends AMazeGenerator{
         return null;
     }
 
+    /**
+     * Returns the position that positionToCheck is dividing between it an the rest of the discovered maze.
+     * Checks only horizontally
+     * @param maze - Maze
+     * @param positionToCheck - Position - position from the frontier
+     * @return - Position
+     */
     private Position isDividingRow(Maze maze, Position positionToCheck) {
         if (positionToCheck.getRowIndex() <= 0 || positionToCheck.getRowIndex() >= maze.getRowLength() - 1) {
             return null;
@@ -129,6 +151,13 @@ public class MyMazeGenerator extends AMazeGenerator{
         return null;
     }
 
+    /**
+     * Returns the position that positionToCheck is dividing between it an the rest of the discovered maze.
+     * Checks only vertically
+     * @param maze - Maze
+     * @param positionToCheck - Position - position from the frontier
+     * @return - Position
+     */
     private Position isDividingColumn(Maze maze, Position positionToCheck) {
         if (positionToCheck.getColumnIndex() <= 0 || positionToCheck.getColumnIndex() >= maze.getColumnLength() - 1) {
             return null;
@@ -145,6 +174,20 @@ public class MyMazeGenerator extends AMazeGenerator{
         return null;
     }
 
+    /**
+     * Selects a random valid goal position for the received maze
+     * @param maze - Maze - RandomizePrim maze without a final goal position
+     */
+    private void selectGoalPosition(Maze maze) {
+        //###TODO: need to decide what to do in case of a 1-by-1 maze
+        if (maze != null) {
+            Position tempGoalPosition = new Position((int) Math.floor(Math.random() * Math.floor(maze.getRowLength())), (int) Math.floor(Math.random() * Math.floor(maze.getColumnLength())));
+            while (maze.getValue(tempGoalPosition) == 1 || tempGoalPosition.equals(maze.getStartPosition())) {
+                tempGoalPosition = new Position((int) Math.floor(Math.random() * Math.floor(maze.getRowLength())), (int) Math.floor(Math.random() * Math.floor(maze.getColumnLength())));
+            }
+            maze.setGoalPosition(tempGoalPosition);
+        }
+    }
 }
 
 
