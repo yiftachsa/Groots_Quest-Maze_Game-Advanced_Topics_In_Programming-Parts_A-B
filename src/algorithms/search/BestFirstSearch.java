@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.PriorityQueue;
 
 public class BestFirstSearch extends BreadthFirstSearch{
+    /**
+     * Constructor
+     */
     public BestFirstSearch() {
         super("BestFirstSearch");
     }
@@ -16,7 +19,5 @@ public class BestFirstSearch extends BreadthFirstSearch{
         isCostConsidered = true;
 
     }
-
-
 
 }

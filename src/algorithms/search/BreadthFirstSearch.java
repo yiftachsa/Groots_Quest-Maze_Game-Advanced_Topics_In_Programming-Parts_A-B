@@ -5,18 +5,29 @@ import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class BreadthFirstSearch extends ASearchingAlgorithm{
+
     protected Queue<AState> opened;
     protected HashSet<AState> closed;
     protected boolean isCostConsidered;
+
+    /**
+     * Constructor
+     * @param name - String
+     */
     public BreadthFirstSearch(String name) {
         super(name);
     }
 
+    /**
+     * Constructor
+     */
     public BreadthFirstSearch() {
         super("BreadthFirstSearch");
-        //### initializeDataStructures();
     }
 
+    /**
+     * Initializes the data structures that are necessary for the 'solve' method
+     */
     protected void initializeDataStructures(){
         opened = new ArrayDeque<>();
         closed = new HashSet<>();
@@ -36,10 +47,10 @@ public class BreadthFirstSearch extends ASearchingAlgorithm{
         while(opened.size() > 0) {
 
             AState currentState = opened.remove();
-            closed.add(currentState);//###Maybe removeMax
+            closed.add(currentState);
             if (currentState.equals(goalState)) {
                 NumberOfNodesEvaluated = closed.size();
-                return new Solution(currentState);//###OR SOLUTION
+                return new Solution(currentState);
             }
 
             //Expand the Node by getting his successors
@@ -49,48 +60,13 @@ public class BreadthFirstSearch extends ASearchingAlgorithm{
                     continue;
                 } else if (!opened.contains(successorState)) {
                     //apply the cost of arrival to successorState
-
-                    //########NEED TO FILL########///
-
                     if (isCostConsidered) {
                         successorState.setCost(successorState.getCost() + currentState.getCost());
                     }
                     //Update successorState parent to be currentState
                     successorState.setParent(currentState);
-
                     opened.add(successorState);
-                } else if (isCostConsidered) {
-                    //successorState is in opened
-                    //AState[] opendedArray= new opened.toArray();
-                    /*for (int i = 0; i < opened.size(); i++) {
-                        if (successorState.equals(opened.))
-                    }*/
-                  /*  boolean alreadyFound = false;
-                    Iterator priorityQueueIter = opened.iterator();
-                    //for (AState openedSuccessorState: opened ) {
-                    while (!alreadyFound && priorityQueueIter.hasNext()){
-                        AState openedSuccessorState = (AState)priorityQueueIter.next();
-                        if (alreadyFound){
-                            break;
-                        }
-                        if (successorState.equals(openedSuccessorState)){
-                            alreadyFound = true;
-                            if (successorState.getCost() < openedSuccessorState.getCost()){
-                                opened.remove(openedSuccessorState);
-                                successorState.setParent(currentState);
-                                successorState.setCost(successorState.getCost() + currentState.getCost());
-                                if (!opened.contains(successorState)) {
-                                    opened.add(successorState);
-                                }
-                            }
-                        }
-                    }
-                    */
                 }
-
-                //###UPDATE successorState WITH THE SHORTEST PATH###
-
-                //########NEED TO FILL########///
             }
         }
         return null;
