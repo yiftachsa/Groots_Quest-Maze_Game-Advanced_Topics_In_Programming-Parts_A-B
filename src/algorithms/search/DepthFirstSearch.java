@@ -53,9 +53,6 @@ public class DepthFirstSearch extends ASearchingAlgorithm{
                     colored.push(successorState);
                 }
             }
-
-
-
         }
         return null;
     }
