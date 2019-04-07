@@ -21,12 +21,12 @@ public class RunSearchOnMaze {
         Solution solution = searcher.solve(domain);
         System.out.println(String.format("'%s' algorithm - nodes evaluated: %s", searcher.getName(), searcher.getNumberOfNodesEvaluated()));
                 //Printing Solution Path
-        System.out.println("Solution path:");
-        ArrayList<AState> solutionPath = solution.getSolutionPath();
-      /*  for (int i = 0; i < solutionPath.size(); i++) {
-            System.out.println(String.format("%s. %s",i,solutionPath.get(i)));
-        }
-        */
+        //System.out.println("Solution path:");
+        //ArrayList<AState> solutionPath = solution.getSolutionPath();
+        //for (int i = 0; i < solutionPath.size(); i++) {
+        //    System.out.println(String.format("%s. %s",i,solutionPath.get(i)));
+        //}
+
     }
 
 

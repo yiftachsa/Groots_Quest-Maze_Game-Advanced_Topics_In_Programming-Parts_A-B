@@ -15,6 +15,9 @@ public class SimpleMazeGenerator extends AMazeGenerator{
     @Override
     public Maze generate(int row, int column) {
         Maze maze= super.generateEmptyMaze(row , column);
+        if (row == 1 && column == 1){
+            return maze;
+        }
         maze = PathCreate(maze);
         maze = CreateFinalMaze(maze);
         return maze;
@@ -108,7 +111,7 @@ public class SimpleMazeGenerator extends AMazeGenerator{
         /*
          * Recursively search for a path in four directions,
          * starting with the random move that was generated.
-        */
+         */
         if (rPathCreate(maze, nextPosition , step+1)){
             maze.setValue(currentPosition.getRowIndex(),currentPosition.getColumnIndex(),2);
             return true;

@@ -7,6 +7,10 @@ public class MyMazeGenerator extends AMazeGenerator{
     @Override
     public Maze generate(int row, int column) {
         Maze maze=super.generateEmptyMaze(row , column);
+        if (row < 3 && column < 3){
+            SimpleMazeGenerator simpleGenerator = new SimpleMazeGenerator();
+            return simpleGenerator.generate(row, column);
+        }
         maze = RandomizePrim(maze);
         selectGoalPosition(maze);
         return maze;
@@ -77,7 +81,7 @@ public class MyMazeGenerator extends AMazeGenerator{
         if(currentPosition.getRowIndex()-1 >0 && maze.getValue(currentPosition.getRowIndex()-1,currentPosition.getColumnIndex()) != 0)
         {
             Position adjacent = new Position(currentPosition.getRowIndex()-1,currentPosition.getColumnIndex());
-            if(!frontier.contains(adjacent));
+            if(!frontier.contains(adjacent))
             {
                 frontier.add(adjacent);
             }
@@ -86,7 +90,7 @@ public class MyMazeGenerator extends AMazeGenerator{
         if(currentPosition.getRowIndex()+1 < maze.getRowLength() && maze.getValue(currentPosition.getRowIndex()+1,currentPosition.getColumnIndex()) != 0)
         {
             Position adjacent = new Position(currentPosition.getRowIndex()+1,currentPosition.getColumnIndex());
-            if(!frontier.contains(adjacent));
+            if(!frontier.contains(adjacent))
             {
                 frontier.add(adjacent);
             }
@@ -95,7 +99,7 @@ public class MyMazeGenerator extends AMazeGenerator{
         if(currentPosition.getColumnIndex()-1 >0 && maze.getValue(currentPosition.getRowIndex(),currentPosition.getColumnIndex()-1) != 0)
         {
             Position adjacent = new Position(currentPosition.getRowIndex(),currentPosition.getColumnIndex()-1);
-            if(!frontier.contains(adjacent));
+            if(!frontier.contains(adjacent))
             {
                 frontier.add(adjacent);
             }
@@ -104,7 +108,7 @@ public class MyMazeGenerator extends AMazeGenerator{
         if(currentPosition.getColumnIndex()+1 < maze.getColumnLength() && maze.getValue(currentPosition.getRowIndex(),currentPosition.getColumnIndex()+1) != 0)
         {
             Position adjacent = new Position(currentPosition.getRowIndex(),currentPosition.getColumnIndex()+1);
-            if(!frontier.contains(adjacent));
+            if(!frontier.contains(adjacent))
             {
                 frontier.add(adjacent);
             }
@@ -179,7 +183,6 @@ public class MyMazeGenerator extends AMazeGenerator{
      * @param maze - Maze - RandomizePrim maze without a final goal position
      */
     private void selectGoalPosition(Maze maze) {
-        //###TODO: need to decide what to do in case of a 1-by-1 maze
         if (maze != null) {
             Position tempGoalPosition = new Position((int) Math.floor(Math.random() * Math.floor(maze.getRowLength())), (int) Math.floor(Math.random() * Math.floor(maze.getColumnLength())));
             while (maze.getValue(tempGoalPosition) == 1 || tempGoalPosition.equals(maze.getStartPosition())) {

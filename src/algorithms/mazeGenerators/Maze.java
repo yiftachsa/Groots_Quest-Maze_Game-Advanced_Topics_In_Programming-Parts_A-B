@@ -15,10 +15,7 @@ public class Maze {
      */
     public Maze(int row, int column) throws IllegalArgumentException
     {
-        if (row == 1 && column == 1){
-            //###TODO: Decide what to do
-        }
-        if(row>0 || column>0)
+        if(row>0 && column>0)
         {
             maze=new int [row][column];
             startPosition=new Position();
@@ -78,7 +75,6 @@ public class Maze {
      * @param maze - int[][]
      */
     public void setMaze(int[][] maze) {
-        //TODO: need to add input checks
         this.maze = maze;
     }
 
@@ -89,7 +85,9 @@ public class Maze {
      * @param value - int
      */
     public void setValue(Position position, int value){
-        this.maze[position.getRowIndex()][position.getColumnIndex()] = value;
+        if (position.getRowIndex() >= 0 && position.getRowIndex() < this.maze.length && position.getColumnIndex() >= 0 && position.getColumnIndex() < this.maze[0].length){
+            this.maze[position.getRowIndex()][position.getColumnIndex()] = value;
+        }
     }
 
     /**
@@ -100,7 +98,9 @@ public class Maze {
      * @param value - int
      */
     public void setValue(int row, int column, int value){
-        this.maze[row][column] = value;
+        if (row >= 0 && row < this.maze.length && column >= 0 && column < this.maze[0].length) {
+            this.maze[row][column] = value;
+        }
     }
 
     /**
@@ -109,7 +109,10 @@ public class Maze {
      * @return - int
      */
     public int getValue(Position position) {
-        return maze[position.getRowIndex()][position.getColumnIndex()];
+        if (position.getRowIndex() >= 0 && position.getRowIndex() < this.maze.length && position.getColumnIndex() >= 0 && position.getColumnIndex() < this.maze[0].length) {
+            return maze[position.getRowIndex()][position.getColumnIndex()];
+        }
+        return -1;
     }
 
     /**
@@ -119,7 +122,10 @@ public class Maze {
      * @return - int
      */
     public int getValue(int row, int column) {
-        return maze[row][column];
+        if (row >= 0 && row < this.maze.length && column >= 0 && column < this.maze[0].length) {
+            return maze[row][column];
+        }
+        return -1;
     }
 
     /**
@@ -127,7 +133,9 @@ public class Maze {
      * @param startPosition - Position
      */
     public void setStartPosition(Position startPosition) {
-        this.startPosition = startPosition;
+        if (startPosition.getRowIndex() >= 0 && startPosition.getRowIndex() < this.maze.length && startPosition.getColumnIndex() >= 0 && startPosition.getColumnIndex() < this.maze[0].length) {
+            this.startPosition = startPosition;
+        }
     }
 
     /**
@@ -135,7 +143,9 @@ public class Maze {
      * @param goalPosition - Position
      */
     public void setGoalPosition(Position goalPosition) {
-        this.goalPosition = goalPosition;
+        if (goalPosition.getRowIndex() >= 0 && goalPosition.getRowIndex() < this.maze.length && goalPosition.getColumnIndex() >= 0 && goalPosition.getColumnIndex() < this.maze[0].length) {
+            this.goalPosition = goalPosition;
+        }
     }
 
     /**
@@ -161,13 +171,21 @@ public class Maze {
      * @param columnsCount - int
      */
     private void generateRandomPositions(int rowsCount, int columnsCount){
-        //###TODO: maybe add handling here for a 1-by-1 maze
-        this.startPosition.setX((int)Math.floor(Math.random() * Math.floor(rowsCount)));
-        this.startPosition.setY((int)Math.floor(Math.random() * Math.floor(columnsCount)));
-        do {
-            this.goalPosition.setX((int)Math.floor(Math.random() * Math.floor(rowsCount)));
-            this.goalPosition.setY((int)Math.floor(Math.random() * Math.floor(columnsCount)));
-        }while (startPosition.equals(goalPosition));
+
+        if (rowsCount == 1 && columnsCount == 1)
+        {
+            this.startPosition.setX(0);
+            this.startPosition.setY(0);
+            this.goalPosition.setX(0);
+            this.goalPosition.setY(0);
+        } else {
+            this.startPosition.setX((int) Math.floor(Math.random() * Math.floor(rowsCount)));
+            this.startPosition.setY((int) Math.floor(Math.random() * Math.floor(columnsCount)));
+            do {
+                this.goalPosition.setX((int) Math.floor(Math.random() * Math.floor(rowsCount)));
+                this.goalPosition.setY((int) Math.floor(Math.random() * Math.floor(columnsCount)));
+            } while (startPosition.equals(goalPosition));
+        }
     }
 
     /**

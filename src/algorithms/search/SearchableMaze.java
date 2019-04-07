@@ -117,7 +117,6 @@ public class SearchableMaze implements ISearchable {
      */
     private void addLegalState(MazeState mazeState, ArrayList<AState> states,ArrayList<AState> directionalStates, Position position, boolean directionalState) {
         if (this.maze.isLegalMove(position)) {
-            //###TODO: maybe need a deep copy
             Maze newMaze = mazeState.getMaze();
             MazeState newMazeState = new MazeState(newMaze, position);
             if (!states.contains(newMazeState)) {

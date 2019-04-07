@@ -2,6 +2,8 @@ package algorithms.mazeGenerators;
 
 public abstract class AMazeGenerator implements IMazeGenerator{
 
+    private final int DEFAULT_MAZE_SIZE = 5;
+
     /**
      * Generates and return a maze with 'row' amount of rows and 'column' amount of columns.
      * All the values in the maze are 0, meaning the maze is empty.
@@ -17,7 +19,7 @@ public abstract class AMazeGenerator implements IMazeGenerator{
             maze = new Maze(row, column);
         }catch (IllegalArgumentException exception)
         {
-            System.out.println(exception.getMessage());
+            maze = new Maze(DEFAULT_MAZE_SIZE, DEFAULT_MAZE_SIZE);
         }
         return maze;
     }

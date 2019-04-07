@@ -1,7 +1,7 @@
 package algorithms.mazeGenerators;
 
 public class EmptyMazeGenerator extends AMazeGenerator{
-//###TODO: Maybe remove this constructor as it is unused throughout the program
+
     /**
      * Constructor
      **/
