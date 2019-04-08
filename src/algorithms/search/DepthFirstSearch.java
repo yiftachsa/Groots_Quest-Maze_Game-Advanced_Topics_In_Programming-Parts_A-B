@@ -32,7 +32,13 @@ public class DepthFirstSearch extends ASearchingAlgorithm{
     @Override
     public Solution solve(ISearchable searchable) {
 
+
         initializeDataStructures();
+        //NULL CHECK
+        if(searchable == null)
+        {
+            return new Solution();
+        }
         AState goalState = searchable.getGoalState();
         colored.push(searchable.getStartState());
         while(!colored.empty())
