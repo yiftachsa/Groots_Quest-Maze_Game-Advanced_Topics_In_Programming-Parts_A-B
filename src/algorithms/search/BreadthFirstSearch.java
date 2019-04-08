@@ -39,6 +39,11 @@ public class BreadthFirstSearch extends ASearchingAlgorithm{
     public Solution solve(ISearchable searchable) {
         //Initializing the data structures
         initializeDataStructures();
+        //NULL CHECK
+        if(searchable == null)
+        {
+            return new Solution();
+        }
         //Get the starting state
         AState startState = searchable.getStartState();
         AState goalState = searchable.getGoalState();
