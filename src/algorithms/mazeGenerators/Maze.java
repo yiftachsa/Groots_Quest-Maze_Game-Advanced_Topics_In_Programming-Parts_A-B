@@ -244,5 +244,5 @@ public class Maze {
                 ", goalPosition=" + goalPosition +
                 '}';
     }
-    
+
 }
