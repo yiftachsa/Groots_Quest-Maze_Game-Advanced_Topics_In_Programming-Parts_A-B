@@ -26,6 +26,7 @@ public class Maze {
         {
             throw new IllegalArgumentException("invalid arguments accept only positive integers");
         }
+        
     }
 
     /**
