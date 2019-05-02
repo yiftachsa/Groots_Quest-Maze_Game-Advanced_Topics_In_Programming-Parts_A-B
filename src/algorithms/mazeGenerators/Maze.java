@@ -29,6 +29,83 @@ public class Maze {
     }
 
     /**
+     *
+     * @param bytes
+     */
+    public Maze(byte[] bytes) {
+        //TODO: recive the same format as outputed by toByteArray and initialize the fields.
+        byte[] mazeByteArray = new byte[bytes.length - (6*4)];
+        byte[] detailsByteArray = new byte[(6*4)];
+
+        /**
+         * mazeDetails = {rows, columns, startRow,startColumn,goalRow,goalColumn};
+         */
+        int[] mazeDetails = getMazeDetailsFromByte(detailsByteArray);
+
+        maze=new int [mazeDetails[0]][mazeDetails[1]]; //rows, columns
+        startPosition = new Position(mazeDetails[2],mazeDetails[3]); //startRow, startColumn
+        goalPosition = new Position(mazeDetails[4],mazeDetails[5]); //goalRow,goalColumn
+
+        recreateMazeFromByte(mazeByteArray);
+    }
+
+    /**
+     *
+     * @param mazeByteArray
+     */
+    private void recreateMazeFromByte(byte[] mazeByteArray) {
+        int currentDigit = 0;
+        int lastRowIndex = 0;
+        int lastColumnIndex=0;
+        for (int i = 0; i < mazeByteArray.length; i++) {
+            //convert from byte(binary?) to int (in base 10)
+            int converted = mazeByteArray[i];//FIXME: check
+            //
+
+            for (int row = lastRowIndex; row < maze.length; row++) {
+                boolean flag=false;
+                for (int column = lastColumnIndex; column < maze[0].length; column++) {
+                    if(converted <=0) {
+                        flag = true;
+                        lastRowIndex = row;
+                        lastColumnIndex = column;
+                        currentDigit = (currentDigit + 1)%2;//good good (Maybe?)
+                        break;
+                    }
+                    maze[row][column] = currentDigit;
+                    converted--;
+                }
+                if(converted <=0) {
+                    if (flag == false) {
+                        lastRowIndex = row;
+                        lastColumnIndex = 0;
+                        currentDigit = (currentDigit + 1)%2;//good good (Maybe?)
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     *
+     * @param detailsByteArray
+     * @return
+     */
+    private int[] getMazeDetailsFromByte(byte[] detailsByteArray) {
+        int[] mazeDetails = new int[6];
+        for (int i = 0; i < 6; i++) {
+            String stringByteValue = "";
+            for (int j = 0; j < 4; j++) {
+                stringByteValue += detailsByteArray[(i*4)+j];
+            }
+            int binaryvalue = Integer.parseInt(stringByteValue, 2);
+            mazeDetails[i] = binaryvalue;
+        }
+        return mazeDetails;
+    }
+
+    /**
      * Returns the maze as a two-dimensional int array
      * @return - int[][]
      */
@@ -245,4 +322,79 @@ public class Maze {
                 '}';
     }
 
+
+    public byte[] toByteArray(){
+        //TODO: convert maze details to byte array and implement the algorithm that they suggested.
+        String[] mazeByteStringArray = getMazeStrings();
+
+        byte[] mazeByteArray = new byte[mazeByteStringArray.length + (6*4)];
+
+        for (int i = 0; i < mazeByteStringArray.length; i++) {
+            int intValue = Integer.parseInt(mazeByteStringArray[i]);
+            byte byteValue = (byte)intValue; //FIXME: check
+            mazeByteArray[i] = byteValue;
+        }
+
+        AddMazeByteDetails(mazeByteArray);
+
+        return mazeByteArray;
+    }
+
+    /**
+     * Adds all the maze details to the given byte array. assumes that there is at least 6 free entries.
+     *
+     * @param mazeByteArray - byte[]
+     */
+    private void AddMazeByteDetails(byte[] mazeByteArray) {
+        int rows = maze.length;
+        int columns = maze[0].length;
+        int startRow = startPosition.getRowIndex();
+        int startColumn = startPosition.getColumnIndex();
+        int goalRow = goalPosition.getRowIndex();
+        int goalColumn = goalPosition.getColumnIndex();
+
+        int[] mazeDetails = {rows, columns, startRow,startColumn,goalRow,goalColumn};
+
+        for (int i = 0; i < mazeDetails.length; i++) {
+            String byteString = Integer.toBinaryString(mazeDetails[i]);
+            while (byteString.length()<32){
+                byteString = "0" + byteString;
+            }
+            for (int j = 0; j < 32; j= j+8) {
+                String stringByte = byteString.substring(j, j+8);
+                int intValue = Integer.parseInt(stringByte);
+                byte byteValue = (byte)intValue;
+                mazeByteArray[i+(mazeByteArray.length - (6*4))] = byteValue;//
+            }
+
+        }
+    }
+
+    /**
+     * Converts the maze to a string array, in which the values represents the sequences of the maze's values.
+     * @return - String[]
+     */
+    private String[] getMazeStrings() {
+        String mazeByteString = ""; //byte representation of the maze
+        int count = 0;
+        int lastDigit = 0;
+        //Beginning with zero
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[0].length; j++) {
+                if(maze[i][j] == lastDigit){
+                    count++;
+                    if (count == 256){
+                        mazeByteString += "255,0,";
+                        count = 1;
+                    }
+                }else {
+                    lastDigit = maze[i][j];
+                    mazeByteString += count + ",";
+                    count = 0;
+                }
+            }
+        }
+        mazeByteString = mazeByteString.substring(0,mazeByteString.length()-1); //TODO: check
+        return mazeByteString.split(","); //removes the last ','
+    }
 }
