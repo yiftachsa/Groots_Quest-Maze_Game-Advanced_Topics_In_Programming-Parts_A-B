@@ -4,7 +4,6 @@ import algorithms.mazeGenerators.IMazeGenerator;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
 import algorithms.search.BestFirstSearch;
-import algorithms.search.BreadthFirstSearch;
 import algorithms.search.SearchableMaze;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

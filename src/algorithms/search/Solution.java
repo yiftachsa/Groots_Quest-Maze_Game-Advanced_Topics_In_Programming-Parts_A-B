@@ -17,6 +17,9 @@ public class Solution {
         this.solutionState = solutionState;
     }
 
+    /**
+     * Constructor
+     */
     public Solution() {
         this.solutionState=null;
     }
