@@ -22,7 +22,7 @@ public class MyDecompressorInputStream  extends InputStream {
 
     public byte[] read(List<Integer> compressed) {
         // Build the dictionary.
-        int dictSize = 0;
+        int dictSize = 2;
         Map<Integer,List<Byte>> dictionary = new HashMap<Integer,List<Byte>>();
 
         List<Byte> temp=new ArrayList<>();
@@ -53,8 +53,8 @@ public class MyDecompressorInputStream  extends InputStream {
                 throw new IllegalArgumentException("Bad compressed i: " + i);
             }
 
-            //result.addAll(entryBytes);
-            result.addAll(entryBytes.subList(1,entryBytes.size()));
+            result.addAll(entryBytes);
+            //result.addAll(entryBytes.subList(1,entryBytes.size()));
 
             // Add w+entry[0] to the dictionary.
             List<Byte> dictEntry = new ArrayList<>();

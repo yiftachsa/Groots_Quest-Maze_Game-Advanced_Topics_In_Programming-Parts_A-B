@@ -62,7 +62,7 @@ public class MyCompressorOutputStream extends OutputStream {
         if (currentBytes.size()!=0)
             result.add(dictionary.get(currentBytes));
         // return result;
-        System.out.println("\n"+"result: ");
+        System.out.println("\n"+"after compression: ");
         for (int i = 0; i < result.size(); i++) {
             System.out.print(result.toArray()[i]);
         }
@@ -72,7 +72,7 @@ public class MyCompressorOutputStream extends OutputStream {
 
     public static void main(String[] args) throws IOException {
 
-        byte [] test = {1,0,0,1,0,0,0,0,1,1};
+        byte [] test = {1,0,0,1,0,0,0,0,1,1,1,0,1,1,1,1,1,1,0,0,1,1,1,1,1,0,1,0,1,0,0,1,0,0,0,0,1,1,1,1,1,1,1};
         System.out.println("before compression: ");
         for (int i = 0; i < test.length; i++) {
             System.out.print(test[i]);
