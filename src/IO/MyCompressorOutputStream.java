@@ -23,19 +23,15 @@ public class MyCompressorOutputStream extends OutputStream {
     @Override
     public void write(byte[] bytes) throws IOException {
         // Build the dictionary.
-        int dictSize = 2; //###!!!
+        int dictSize = 256; //###!!!
         Map<List<Byte>, Integer> dictionary = new HashMap<List<Byte>, Integer>();
 
-        //for (int i = 0; i < 256; i++)
-        //    dictionary.put("" + (char)i, i);
-        List<Byte> temp=new ArrayList<>();
-        byte initializeByte=0;
-        temp.add(initializeByte);
-        dictionary.put(temp,0);
-        temp=new ArrayList<>();
-        initializeByte=1;
-        temp.add(initializeByte);
-        dictionary.put(temp,1);
+        for (int i = -128; i <= 127; i++) {
+            List<Byte> temp=new ArrayList<>();
+            byte initializeByte=(byte) i;
+            temp.add(initializeByte);
+            dictionary.put(temp,i);
+        }
 
         List<Byte> currentBytes=new ArrayList<Byte>();
         List<Integer> result = new ArrayList<Integer>();
@@ -72,7 +68,7 @@ public class MyCompressorOutputStream extends OutputStream {
 
     public static void main(String[] args) throws IOException {
 
-        byte [] test = {1,0,0,1,0,0,0,0,1,1,1,0,1,1,1,1,1,1,0,0,1,1,1,1,1,0,1,0,1,0,0,1,0,0,0,0,1,1,1,1,1,1,1};
+        byte [] test = {15,0,0,0,0,1,1,1,1,1,1,1};
         System.out.println("before compression: ");
         for (int i = 0; i < test.length; i++) {
             System.out.print(test[i]);

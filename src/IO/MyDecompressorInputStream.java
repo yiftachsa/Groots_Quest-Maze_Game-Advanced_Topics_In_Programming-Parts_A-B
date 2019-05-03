@@ -22,9 +22,16 @@ public class MyDecompressorInputStream  extends InputStream {
 
     public byte[] read(List<Integer> compressed) {
         // Build the dictionary.
-        int dictSize = 2;
+        int dictSize = 256;
         Map<Integer,List<Byte>> dictionary = new HashMap<Integer,List<Byte>>();
 
+        for (int i = -128; i <= 127; i++) {
+            List<Byte> temp=new ArrayList<>();
+            byte initializeByte=(byte) i;
+            temp.add(initializeByte);
+            dictionary.put(i,temp);
+        }
+        /*
         List<Byte> temp=new ArrayList<>();
         byte initializeByte=0;
         temp.add(initializeByte);
@@ -33,7 +40,7 @@ public class MyDecompressorInputStream  extends InputStream {
         initializeByte=1;
         temp.add(initializeByte);
         dictionary.put(1,temp);
-
+        */
         Byte firstByte= (byte)(int)compressed.remove(0);
 
         List<Byte> currentBytes=new ArrayList<Byte>();

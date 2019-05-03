@@ -323,7 +323,10 @@ public class Maze {
                 '}';
     }
 
-
+    /**
+     *
+     * @return
+     */
     public byte[] toByteArray(){
         //TODO: convert maze details to byte array and implement the algorithm that they suggested.
         String[] mazeByteStringArray = getMazeStrings();
