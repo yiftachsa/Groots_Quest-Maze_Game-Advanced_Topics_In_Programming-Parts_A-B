@@ -41,7 +41,7 @@ public class MyDecompressorInputStream  extends InputStream {
         temp.add(initializeByte);
         dictionary.put(1,temp);
         */
-        Byte firstByte= (byte)(int)compressed.remove(0);
+        Byte firstByte= (byte)(int)compressed.remove(0);//:FIXME:!!!
 
         List<Byte> currentBytes=new ArrayList<Byte>();
         currentBytes.add(firstByte);
