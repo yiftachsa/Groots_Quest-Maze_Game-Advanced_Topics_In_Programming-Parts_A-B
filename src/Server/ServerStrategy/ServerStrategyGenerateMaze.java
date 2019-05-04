@@ -25,6 +25,8 @@ public class ServerStrategyGenerateMaze implements IServerStrategy{
                 compressor.write(mazeByteArray);
                 //TODO:this line should be at the end of MyCompressorOutputStream write method
                 //toClient.writeObject(al);
+                //TODO:Check in the lecture, maybe Maze should be serializable
+
             }
 
         } catch (IOException e) {
