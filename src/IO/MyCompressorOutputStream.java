@@ -23,14 +23,14 @@ public class MyCompressorOutputStream extends OutputStream {
     @Override
     public void write(byte[] bytes) throws IOException {
         // Build the dictionary.
-        int dictSize = 256; //###!!!
+        int dictSize = 0; //###!!!
         Map<List<Byte>, Integer> dictionary = new HashMap<List<Byte>, Integer>();
 
         for (int i = -128; i <= 127; i++) {
             List<Byte> temp=new ArrayList<>();
             byte initializeByte=(byte) i;
             temp.add(initializeByte);
-            dictionary.put(temp,i);
+            dictionary.put(temp,dictSize++);
         }
 
         List<Byte> currentBytes=new ArrayList<Byte>();
