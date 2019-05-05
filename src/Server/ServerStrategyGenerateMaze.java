@@ -1,13 +1,14 @@
-package Server.ServerStrategy;
+package Server;
 
 import IO.MyCompressorOutputStream;
+import algorithms.mazeGenerators.AMazeGenerator;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
 
 import java.io.*;
-import java.util.ArrayList;
 
-public class ServerStrategyGenerateMaze implements IServerStrategy{
+public class ServerStrategyGenerateMaze implements IServerStrategy {
+
     @Override
     public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
         try {
@@ -18,13 +19,11 @@ public class ServerStrategyGenerateMaze implements IServerStrategy{
             int[] mazeSpecs = (int[])fromClient.readObject();
             Maze maze;
             if (mazeSpecs != null && mazeSpecs.length ==2){
-                MyMazeGenerator mazeGenerator = new MyMazeGenerator();
+                AMazeGenerator mazeGenerator = new MyMazeGenerator();
                 maze = mazeGenerator.generate(mazeSpecs[0], mazeSpecs[1]);
                 byte[] mazeByteArray = maze.toByteArray();
-                MyCompressorOutputStream compressor = new MyCompressorOutputStream(toClient);
+                OutputStream compressor = new MyCompressorOutputStream(toClient);
                 compressor.write(mazeByteArray);
-                //TODO:this line should be at the end of MyCompressorOutputStream write method
-                //toClient.writeObject(al);
             }
 
         } catch (IOException e) {

@@ -1,6 +1,8 @@
 package algorithms.search;
 
-public abstract class AState implements Comparable {
+import java.io.Serializable;
+
+public abstract class AState implements Comparable, Serializable {
 
     private AState parent;
     private double cost;

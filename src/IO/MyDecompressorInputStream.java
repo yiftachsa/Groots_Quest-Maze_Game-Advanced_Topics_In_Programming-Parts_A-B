@@ -1,9 +1,10 @@
 package IO;
 
 import javafx.util.Pair;
+import sun.misc.IOUtils;
+import sun.nio.ch.IOUtil;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,53 @@ public class MyDecompressorInputStream  extends InputStream {
         return 0;
     }
 
-    public byte[] read(List<Integer> compressed) {
+    @Override
+    public int read(byte[] mazeByteArray) throws IOException {
+        List<Byte> byteList = new ArrayList<>();
+        while(in.available() >0){
+            int integerByte = in.read();
+            byte b = (byte) integerByte;
+            byteList.add(b);
+        }
+        byte[] compressedMazeBytes = new byte[byteList.size()];
+        for (int i = 0; i < byteList.size(); i++) {
+            compressedMazeBytes[i] = byteList.get(i);
+        }
+
+        //byte[] compressedMazeBytes = (byte[])inputStream.();
+        List<Pair<Integer,Integer>> compressedMazePairs = fromByteToPairs(compressedMazeBytes);
+        mazeByteArray = read(compressedMazePairs);
+        return 1;
+    }
+
+    /**
+     * Recives compressed byte array and return a list of pairs.
+     * @param compressedMazeBytes - byte[]
+     * @return - List<Pair<Integer, Integer>>
+     */
+    public List<Pair<Integer, Integer>> fromByteToPairs(byte[] compressedMazeBytes) { //TODO:Change to private
+        List<Pair<Integer, Integer>> compressedMazePairs = new ArrayList<>();
+        for (int i = 0; i < compressedMazeBytes.length; i=i+5) {
+            //key
+            String stringByteKey = "";
+            for (int j = 0; j < 4; j++) {
+                String binaryString = String.format("%8s" , Integer.toBinaryString(compressedMazeBytes[i+j] & 0xFF)).replace(' ', '0');
+                stringByteKey += binaryString;
+            }
+            int key = Integer.parseInt(stringByteKey, 2);
+            //value
+            int value = compressedMazeBytes[i+4] & 0xFF;
+
+            compressedMazePairs.add(new Pair<>(key,value));
+        }
+        return compressedMazePairs;
+    }
+
+    //public List<Pair<Integer,Integer>> read(byte[] bytes) {
+
+    //    return null;
+    //}
+    /*
         // Build the dictionary.
         int dictSize = 0;
         Map<Integer, List<Byte>> dictionary = new HashMap<Integer, List<Byte>>();
@@ -42,7 +89,7 @@ public class MyDecompressorInputStream  extends InputStream {
         initializeByte=1;
         temp.add(initializeByte);
         dictionary.put(1,temp);
-        */
+
         Byte firstByte = (byte) (int) compressed.remove(0);//:FIXME:!!!
 
         List<Byte> currentBytes = new ArrayList<Byte>();
@@ -80,8 +127,9 @@ public class MyDecompressorInputStream  extends InputStream {
         }
         return null;
     }
-    public byte[] read2(List<Pair<Integer,Integer>> compressed) {
-       // byte [] test = {15,0,0,0,0,1,1,1,1,1,1,1};
+    */
+    public byte[] read(List<Pair<Integer,Integer>> compressed) {
+        // byte [] test = {15,0,0,0,0,1,1,1,1,1,1,1};
         List<String> temp=new ArrayList<String>();
         temp.add("NULL");
         int numberOfByte=0;
@@ -112,6 +160,10 @@ public class MyDecompressorInputStream  extends InputStream {
                 test[k] = (byte) covertStringToInt;
                 k++;
             }
+        }
+        System.out.println("\n" + "after decompression: ");
+        for (int i = 0; i < test.length; i++) {
+            System.out.print(test[i]);
         }
         return test;
     }

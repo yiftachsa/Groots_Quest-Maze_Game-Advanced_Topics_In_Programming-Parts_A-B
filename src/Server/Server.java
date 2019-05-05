@@ -1,7 +1,5 @@
 package Server;
 
-import Server.ServerStrategy.IServerStrategy;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -24,6 +22,7 @@ public class Server {
             runServer();
         }).start();
     }
+
 
     private void runServer() {
         try {
