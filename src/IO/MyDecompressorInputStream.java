@@ -25,18 +25,21 @@ public class MyDecompressorInputStream  extends InputStream {
 
     @Override
     public int read(byte[] mazeByteArray) throws IOException {
-        ObjectInputStream inputStream  = new ObjectInputStream(in);
-
-        try {
-            byte[] compressedMazeBytes = (byte[])inputStream.readObject();
-            List<Pair<Integer,Integer>> compressedMazePairs = fromByteToPairs(compressedMazeBytes);
-            mazeByteArray = read(compressedMazePairs);
-            return 1;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        List<Byte> byteList = new ArrayList<>();
+        while(in.available() >0){
+            int integerByte = in.read();
+            byte b = (byte) integerByte;
+            byteList.add(b);
+        }
+        byte[] compressedMazeBytes = new byte[byteList.size()];
+        for (int i = 0; i < byteList.size(); i++) {
+            compressedMazeBytes[i] = byteList.get(i);
         }
 
-        return 0;
+        //byte[] compressedMazeBytes = (byte[])inputStream.();
+        List<Pair<Integer,Integer>> compressedMazePairs = fromByteToPairs(compressedMazeBytes);
+        mazeByteArray = read(compressedMazePairs);
+        return 1;
     }
 
     /**
