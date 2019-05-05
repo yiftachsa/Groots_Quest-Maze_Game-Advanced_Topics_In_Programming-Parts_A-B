@@ -17,6 +17,7 @@ public class MyCompressorOutputStream extends OutputStream {
     //public List<Integer> resultTEMP = new ArrayList<Integer>();
     //public Map<List<Byte>, Integer> dictionaryTEMP = new HashMap<List<Byte>, Integer>();
     public List<Pair<Integer,Integer>> resultTEMP2 = new ArrayList<Pair<Integer,Integer>>();
+    byte[] resultTEMP3;
 
     public MyCompressorOutputStream(OutputStream outputStream) {
         out = outputStream;
@@ -97,6 +98,9 @@ public class MyCompressorOutputStream extends OutputStream {
             byte addValue = (byte)((int) result.get(i).getValue());
             byteResult[index++]=addValue;
         }
+
+        resultTEMP3 = byteResult;
+
         System.out.println("\n"+"after compression: ");
         for (int i = 0; i < result.size(); i++) {
             System.out.print("("+result.toArray()[i]+")           ,");
@@ -123,7 +127,12 @@ public class MyCompressorOutputStream extends OutputStream {
 
         InputStream in = new PipedInputStream();
         MyDecompressorInputStream testMainDecompressor = new MyDecompressorInputStream(in);
-        testMainDecompressor.read2(testMainCompressor.resultTEMP2);
+        List<Pair<Integer, Integer>> decompressList= testMainDecompressor.fromByteToPairs(testMainCompressor.resultTEMP3);
+        System.out.println("after fromByteToPairs");
+        for (int i = 0; i < decompressList.size(); i++) {
+            System.out.print("("+decompressList.toArray()[i]+")           ,");
+        }
+        testMainDecompressor.read(testMainCompressor.resultTEMP2);
     }
 
     @Override

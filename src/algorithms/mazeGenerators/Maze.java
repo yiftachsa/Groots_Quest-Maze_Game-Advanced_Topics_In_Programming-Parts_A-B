@@ -98,7 +98,7 @@ public class Maze {
         for (int i = 0; i < 6; i++) {
             String stringByteValue = "";
             for (int j = 0; j < 4; j++) {
-                stringByteValue += detailsByteArray[(i*4)+j];
+                stringByteValue += detailsByteArray[(i*4)+j];//???
             }
             int binaryvalue = Integer.parseInt(stringByteValue, 2);
             mazeDetails[i] = binaryvalue;
