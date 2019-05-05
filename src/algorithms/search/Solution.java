@@ -1,8 +1,9 @@
 package algorithms.search;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Solution {
+public class Solution implements Serializable {
 
     /**
      * The last state in the solution
