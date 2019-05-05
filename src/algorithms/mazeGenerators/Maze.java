@@ -324,11 +324,10 @@ public class Maze {
     }
 
     /**
-     *
+     * convert maze details to byte array and implement the algorithm that they suggested.
      * @return
      */
     public byte[] toByteArray(){
-        //TODO: convert maze details to byte array and implement the algorithm that they suggested.
         String[] mazeByteStringArray = getMazeStrings();
 
         byte[] mazeByteArray = new byte[mazeByteStringArray.length + (6*4)];
@@ -359,6 +358,7 @@ public class Maze {
 
         int[] mazeDetails = {rows, columns, startRow,startColumn,goalRow,goalColumn};
 
+        //From int TO byte
         for (int i = 0; i < mazeDetails.length; i++) {
             String byteString = Integer.toBinaryString(mazeDetails[i]);
             while (byteString.length()<32){
@@ -366,7 +366,7 @@ public class Maze {
             }
             for (int j = 0; j < 32; j= j+8) {
                 String stringByte = byteString.substring(j, j+8);
-                int intValue = Integer.parseInt(stringByte);
+                int intValue = Integer.parseInt(stringByte,2);
                 byte byteValue = (byte)intValue;
                 mazeByteArray[i+(mazeByteArray.length - (6*4))] = byteValue;//
             }

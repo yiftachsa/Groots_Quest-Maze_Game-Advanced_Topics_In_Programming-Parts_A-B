@@ -34,7 +34,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
 
 
             Solution exsitingSolution = RetriveExistingSolutionFromFile(clientMaze);
-
+/*
             if (exsitingSolution!=null){
                 //Option 1
                 byte[] solutionByteArray = exsitingSolution.toByteArray(); //like in maze we wil need to write another constructor.
@@ -57,8 +57,9 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                 //the maze will be read and if the maze matches then the solution will be read from the file and returned,
                 //if not then we will continue to read files from the storage.
                 //if no identical maze was found then the server will generate a new solution.
-            }
 
+            }
+*/
         } catch (
                 IOException e) {
             e.printStackTrace();

@@ -113,6 +113,10 @@ public class MyDecompressorInputStream  extends InputStream {
                 k++;
             }
         }
+        System.out.println("\n" + "after decompression: ");
+        for (int i = 0; i < test.length; i++) {
+            System.out.print(test[i]);
+        }
         return test;
     }
 }
