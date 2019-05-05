@@ -8,6 +8,7 @@ import algorithms.mazeGenerators.MyMazeGenerator;
 import java.io.*;
 
 public class ServerStrategyGenerateMaze implements IServerStrategy {
+
     @Override
     public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
         try {
