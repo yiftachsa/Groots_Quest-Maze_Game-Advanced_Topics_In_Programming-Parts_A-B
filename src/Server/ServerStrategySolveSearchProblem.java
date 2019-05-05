@@ -15,8 +15,8 @@ import java.util.HashSet;
 public class ServerStrategySolveSearchProblem implements IServerStrategy {
 
     private static int fileIndex = 0;
-    //Optional
-    private static HashMap<byte[],Integer> previouslySolved= new HashMap<>();
+    //TODO: decide if we should hold a data structure in memory to save retrial time.
+    //private static HashMap<byte[],Integer> previouslySolved= new HashMap<>();
 
     @Override
     public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
@@ -30,7 +30,13 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             decompressor.read(decompressedMaze);
 
             Solution previousSolution = retrieveExistingSolutionFromFile(decompressedMaze);
-
+            //OR
+            //TODO: decide if we should hold a data structure in memory to save retrial time.
+            /*
+            if (previouslySolved.containsKey(decompressedMaze)){
+                int previousSolutionIndex = previouslySolved.get(decompressedMaze);
+            }
+            */
             if (previousSolution != null) {
                 toClient.writeObject(previousSolution); //if previousSolution is Solution TODO:Check in the lecture, maybe Solution should be serializable
             } else {
