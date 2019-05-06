@@ -25,25 +25,19 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             ObjectOutputStream toClient = new ObjectOutputStream(outToClient);
             toClient.flush();
 
-            MyDecompressorInputStream decompressor = new MyDecompressorInputStream(fromClient);
-            byte[] decompressedSearchProblem = new byte[0];
-            decompressor.read(decompressedSearchProblem);
-            int key = decompressedSearchProblem.hashCode();
-            //OR
+            //MyDecompressorInputStream decompressor = new MyDecompressorInputStream(fromClient);
+            //byte[] decompressedSearchProblem = new byte[0];
+            //decompressor.read(decompressedSearchProblem);
+            Maze clientMaze = (Maze)fromClient.readObject();
+            int key = clientMaze.hashCode();
+
             //TODO: decide if we should hold a data structure in memory to save retrial time.
 
             if (previouslySolved.containsKey(key)){
                 int previousSolutionIndex = previouslySolved.get(key);
                 Solution previousSolution = retrieveExistingSolutionFromFile(previousSolutionIndex);
                 toClient.writeObject(previousSolution); //if previousSolution is Solution TODO:Check in the lecture, maybe Solution should be serializable
-
             } else {
-                //generate Maze
-                Maze clientMaze = new Maze(decompressedSearchProblem);
-                if (clientMaze == null || !(clientMaze instanceof Maze)) {
-                    return;
-                }
-
                 //Generate new solution
                 SearchableMaze searchableClientMaze = new SearchableMaze(clientMaze);
                 ASearchingAlgorithm searchingAlgorithm = new BestFirstSearch();
@@ -62,6 +56,8 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             fromClient.close();
             toClient.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

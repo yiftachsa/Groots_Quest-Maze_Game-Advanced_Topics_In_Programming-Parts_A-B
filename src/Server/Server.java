@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
     private int port;
     private int listeningInterval;
     private IServerStrategy serverStrategy;
     private volatile boolean stop;
+    private ExecutorService executor;
 
     public Server(int port, int listeningInterval, IServerStrategy serverStrategy) {
         this.port = port;
@@ -28,6 +32,7 @@ public class Server {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             serverSocket.setSoTimeout(listeningInterval);
+            executor = Executors.newFixedThreadPool(4);
             //LOG.info(String.format("Server starter at %s!", serverSocket));
             //LOG.info(String.format("Server's Strategy: %s", serverStrategy.getClass().getSimpleName()));
             //LOG.info("Server is waiting for clients...");
@@ -35,10 +40,7 @@ public class Server {
                 try {
                     Socket clientSocket = serverSocket.accept(); // blocking call
                     //LOG.info(String.format("Client excepted: %s", clientSocket));
-                    new Thread(() -> {
-                        handleClient(clientSocket);
-                        //LOG.info(String.format("Finished handle client: %s", clientSocket));
-                    }).start();
+                    executor.execute(new Thread(() -> {handleClient(clientSocket);}));
                 } catch (SocketTimeoutException e) {
                     //LOG.debug("Socket Timeout - No clients pending!");
                 }

@@ -14,8 +14,6 @@ public class MyCompressorOutputStream extends OutputStream {
 
     private OutputStream out;
 
-    //public List<Integer> resultTEMP = new ArrayList<Integer>();
-    //public Map<List<Byte>, Integer> dictionaryTEMP = new HashMap<List<Byte>, Integer>();
     public List<Pair<Integer,Integer>> resultTEMP2 = new ArrayList<Pair<Integer,Integer>>();
     byte[] resultTEMP3;
 
@@ -120,8 +118,8 @@ public class MyCompressorOutputStream extends OutputStream {
             System.out.print("key:"+byteResult[i]+""+byteResult[i+1]+""+byteResult[i+2]+""+byteResult[i+3]+" value:"+byteResult[i+4]+",");
         }
         */
-
-        out.write(byteResult);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
+        objectOutputStream.writeObject(byteResult);
     }
 
 

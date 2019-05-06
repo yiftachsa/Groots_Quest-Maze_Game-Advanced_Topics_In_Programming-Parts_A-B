@@ -36,7 +36,15 @@ public class Maze implements Serializable {
      */
     public Maze(byte[] bytes) {
         //TODO: recive the same format as outputed by toByteArray and initialize the fields.
-        byte[] mazeByteArray = new byte[bytes.length - (6*4)];
+        int size = 0;
+        for (int i = bytes.length-1; i >= 0; i--) {
+            if(bytes[i] !=0 ){
+                size = i+1;
+                break;
+            }
+        }
+
+        byte[] mazeByteArray = new byte[size - (6*4)];
         for (int i = 0; i < mazeByteArray.length; i++) {
             mazeByteArray[i] = bytes[i];
         }
