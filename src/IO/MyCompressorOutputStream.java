@@ -26,6 +26,13 @@ public class MyCompressorOutputStream extends OutputStream {
 
     @Override
     public void write(byte[] bytes) throws IOException {
+        /*
+        System.out.println("before compression: ");
+        for (int i = 0; i < bytes.length; i++) {
+            System.out.print(bytes[i]);
+        }
+        */
+
         // Build the dictionary.
         int dictSize = 1; //###!!!
         int resultInd=0;
@@ -49,7 +56,7 @@ public class MyCompressorOutputStream extends OutputStream {
             currentBytesB.add(b);
             // System.arraycopy(currentBytes ,0,currentBytesB,0,currentBytes.length);
             // currentBytesB[currentBytesB.length-1]=b;
-            if(dictionary.containsKey(currentBytesB) && counter == bytes.length)//FIXME:!!!!!!!!!!!!!
+            if(dictionary.containsKey(currentBytesB) && counter == bytes.length)
             {
                 if(currentBytesB.size() == 1)
                 {
@@ -67,10 +74,6 @@ public class MyCompressorOutputStream extends OutputStream {
                 resultInd=dictionary.get(currentBytesB);
             }
             else {
-                /*if(currentBytes.size()!=0) {
-                Integer test = dictionary.get(currentBytes);
-                result.add(dictionary.get(currentBytes));
-                }*/
                 // Add currentBytesB to the dictionary.
                 dictionary.put(currentBytesB, dictSize++);
                 result.add(new Pair<>(resultInd,b & 0xFF));
@@ -107,7 +110,7 @@ public class MyCompressorOutputStream extends OutputStream {
         }
 
         resultTEMP3 = byteResult;
-
+        /*
         System.out.println("\n"+"after compression: ");
         for (int i = 0; i < result.size(); i++) {
             System.out.print("("+result.toArray()[i]+")           ,");
@@ -116,6 +119,7 @@ public class MyCompressorOutputStream extends OutputStream {
         for (int i = 0; i < byteResult.length; i=i+5) {
             System.out.print("key:"+byteResult[i]+""+byteResult[i+1]+""+byteResult[i+2]+""+byteResult[i+3]+" value:"+byteResult[i+4]+",");
         }
+        */
 
         out.write(byteResult);
     }
@@ -124,10 +128,7 @@ public class MyCompressorOutputStream extends OutputStream {
     public static void main(String[] args) throws IOException {
 
         byte [] test = {1,0,1,1,0,-1,127,-127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0};
-        System.out.println("before compression: ");
-        for (int i = 0; i < test.length; i++) {
-            System.out.print(test[i]);
-        }
+
         OutputStream out = new ByteArrayOutputStream();
         MyCompressorOutputStream testMainCompressor=new MyCompressorOutputStream(out);
         testMainCompressor.write(test);
@@ -135,10 +136,12 @@ public class MyCompressorOutputStream extends OutputStream {
         InputStream in = new PipedInputStream();
         MyDecompressorInputStream testMainDecompressor = new MyDecompressorInputStream(in);
         List<Pair<Integer, Integer>> decompressList= testMainDecompressor.fromByteToPairs(testMainCompressor.resultTEMP3);
+        /*
         System.out.println("after fromByteToPairs");
         for (int i = 0; i < decompressList.size(); i++) {
             System.out.print("("+decompressList.toArray()[i]+")           ,");
         }
+        */
         testMainDecompressor.read(testMainCompressor.resultTEMP2);
     }
 

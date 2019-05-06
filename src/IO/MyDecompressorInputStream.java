@@ -38,7 +38,10 @@ public class MyDecompressorInputStream  extends InputStream {
 
         //byte[] compressedMazeBytes = (byte[])inputStream.();
         List<Pair<Integer,Integer>> compressedMazePairs = fromByteToPairs(compressedMazeBytes);
-        mazeByteArray = read(compressedMazePairs);
+        byte[] tempByteArray = read(compressedMazePairs);
+        for (int i = 0; i < mazeByteArray.length; i++) {
+            mazeByteArray[i] = tempByteArray[i];
+        }
         return 1;
     }
 
@@ -129,42 +132,44 @@ public class MyDecompressorInputStream  extends InputStream {
     }
     */
     public byte[] read(List<Pair<Integer,Integer>> compressed) {
-        // byte [] test = {15,0,0,0,0,1,1,1,1,1,1,1};
-        List<String> temp=new ArrayList<String>();
-        temp.add("NULL");
+        List<String> decopressedPairsList=new ArrayList<String>();
+        decopressedPairsList.add("NULL");
         int numberOfByte=0;
         for (int i = 0; i < compressed.size(); i++) {
             /*for (int j = 0; j < compressed.get(i).getKey()-1; j++) {
-                int check=temp.get(compressed.get(i).getKey()+j);
-                temp.add(temp.get(compressed.get(i).getKey()+j));
+                int check=decopressedPairsList.get(compressed.get(i).getKey()+j);
+                decopressedPairsList.add(decopressedPairsList.get(compressed.get(i).getKey()+j));
             }
             */
             if(compressed.get(i).getKey()!=0){
-                temp.add(temp.get(compressed.get(i).getKey())+","+compressed.get(i).getValue()+"");
-                numberOfByte=numberOfByte+temp.get(i+1).length()-temp.get(i+1).replace(",","").length()+1;
+                decopressedPairsList.add(decopressedPairsList.get(compressed.get(i).getKey())+","+compressed.get(i).getValue()+"");
+                numberOfByte=numberOfByte+decopressedPairsList.get(i+1).length()-decopressedPairsList.get(i+1).replace(",","").length()+1;
             }
             else
             {
-                temp.add(compressed.get(i).getValue()+"");
+                decopressedPairsList.add(compressed.get(i).getValue()+"");
                 numberOfByte++;
 
             }
 
         }
-        byte[] test=new byte[numberOfByte];
+        byte[] decompressedByteArray=new byte[numberOfByte];
         int k = 0;
-        for (int i = 1; i < temp.size() ; i++) {
-            String[] afterSplit=temp.get(i).split(",");
+        for (int i = 1; i < decopressedPairsList.size() ; i++) {
+            String[] afterSplit=decopressedPairsList.get(i).split(",");
             for (int j = 0; j < afterSplit.length; j++) {
                 int covertStringToInt=Integer.parseInt(afterSplit[j]);
-                test[k] = (byte) covertStringToInt;
+                decompressedByteArray[k] = (byte) covertStringToInt;
                 k++;
             }
         }
+        /*
         System.out.println("\n" + "after decompression: ");
-        for (int i = 0; i < test.length; i++) {
-            System.out.print(test[i]);
+        for (int i = 0; i < decompressedByteArray.length; i++) {
+            System.out.print(decompressedByteArray[i]);
         }
-        return test;
+        */
+
+        return decompressedByteArray;
     }
 }

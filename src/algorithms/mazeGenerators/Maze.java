@@ -65,7 +65,7 @@ public class Maze implements Serializable {
         int currentDigit = 0;
         int lastIndex=0;
         for (int i = 0; i < mazeByteArray.length; i++) {
-            int convertedCounter = mazeByteArray[i];
+            int convertedCounter = mazeByteArray[i] & 0xFF;
             for (int j = 0; j < convertedCounter; j++) {
                 oneDimensionalMaze[lastIndex] = currentDigit;
                 lastIndex ++;

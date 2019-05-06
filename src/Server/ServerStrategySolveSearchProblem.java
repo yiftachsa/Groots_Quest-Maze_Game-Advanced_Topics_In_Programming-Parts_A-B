@@ -16,7 +16,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
 
     private static int fileIndex = 0;
     //TODO: decide if we should hold a data structure in memory to save retrial time.
-    //private static HashMap<byte[],Integer> previouslySolved= new HashMap<>();
+    private static HashMap<Integer,Integer> previouslySolved= new HashMap<>();
 
     @Override
     public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
@@ -26,22 +26,20 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             toClient.flush();
 
             MyDecompressorInputStream decompressor = new MyDecompressorInputStream(fromClient);
-            byte[] decompressedMaze = new byte[0];
-            decompressor.read(decompressedMaze);
-
-            Solution previousSolution = retrieveExistingSolutionFromFile(decompressedMaze);
+            byte[] decompressedSearchProblem = new byte[0];
+            decompressor.read(decompressedSearchProblem);
+            int key = decompressedSearchProblem.hashCode();
             //OR
             //TODO: decide if we should hold a data structure in memory to save retrial time.
-            /*
-            if (previouslySolved.containsKey(decompressedMaze)){
-                int previousSolutionIndex = previouslySolved.get(decompressedMaze);
-            }
-            */
-            if (previousSolution != null) {
+
+            if (previouslySolved.containsKey(key)){
+                int previousSolutionIndex = previouslySolved.get(key);
+                Solution previousSolution = retrieveExistingSolutionFromFile(previousSolutionIndex);
                 toClient.writeObject(previousSolution); //if previousSolution is Solution TODO:Check in the lecture, maybe Solution should be serializable
+
             } else {
                 //generate Maze
-                Maze clientMaze = new Maze(decompressedMaze);
+                Maze clientMaze = new Maze(decompressedSearchProblem);
                 if (clientMaze == null || !(clientMaze instanceof Maze)) {
                     return;
                 }
@@ -54,20 +52,15 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
 
                 //TODO:Save the maze and the solution in file
                 String tempDirectoryPath = System.getProperty("java.io.tmpdir");
-                String mazeFileName = tempDirectoryPath + "\\Maze" + fileIndex + ".maze"; //TODO:Path
+                //String mazeFileName = tempDirectoryPath + "\\Maze" + fileIndex + ".maze"; //TODO:Path
                 String solutionFileName = tempDirectoryPath + "\\Solution" + fileIndex + ".sol"; //TODO:Path
+                previouslySolved.put(key,fileIndex);
                 fileIndex++;
-
-                saveMazeToFile(decompressedMaze, mazeFileName);
+                //saveMazeToFile(decompressedSearchProblem, mazeFileName);
                 saveSolutionToFile(newSolution, solutionFileName);
-
-                //Every solution should be in a separate file.
-                //Maybe put the maze and the solution in the same file. when searching for a solution,
-                //the maze will be read and if the maze matches then the solution will be read from the file and returned,
-                //if not then we will continue to read files from the storage.
-                //if no identical maze was found then the server will generate a new solution.
             }
-
+            fromClient.close();
+            toClient.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -85,7 +78,25 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             e.printStackTrace();
         }
     }
+    private Solution retrieveExistingSolutionFromFile(int fileIndex) {
+        String tempDirectoryPath = System.getProperty("java.io.tmpdir");
+        String solutionFileName = tempDirectoryPath + "\\Solution" + fileIndex + ".sol"; //TODO: Check path
+        try {
+            InputStream fileInputStreamSolution = new FileInputStream(solutionFileName);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStreamSolution);
+            Solution savedSolution = (Solution)objectInputStream.readObject();
+            objectInputStream.close();
+            fileInputStreamSolution.close();
+            return savedSolution;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
+        return null;
+    }
+    /*
     private void saveMazeToFile(byte[] decompressedMaze, String mazeFileName) {
         // save maze to a file
         try {
@@ -99,7 +110,8 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             e.printStackTrace();
         }
     }
-
+    */
+    /*
     private Solution retrieveExistingSolutionFromFile(byte[] decompressedMaze) {
         String tempDirectoryPath = System.getProperty("java.io.tmpdir");
         for (int i = 0; i < fileIndex; i++) {
@@ -132,5 +144,6 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
 
         return null;
     }
+    */
 }
 
