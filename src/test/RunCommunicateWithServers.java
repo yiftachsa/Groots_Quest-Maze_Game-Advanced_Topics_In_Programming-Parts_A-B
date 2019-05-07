@@ -47,6 +47,7 @@ public class RunCommunicateWithServers {
             }
         }
 */
+
         MyMazeGenerator myMazeGenerator = new MyMazeGenerator();
         Maze maze = myMazeGenerator.generate(5,5);
 
