@@ -50,7 +50,6 @@ public class Server {
         }
     }
 
-
     private void handleClient(Socket clientSocket) {
         try {
             //LOG.info(String.format("Handling client with socket: %s", clientSocket.toString()));
