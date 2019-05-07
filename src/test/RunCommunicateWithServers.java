@@ -28,7 +28,7 @@ public class RunCommunicateWithServers {
 
 
         //Threads initialization
-/*
+
         Thread[] mazeGeneratingThreads = new Thread[10];
         for (int i = 0; i < mazeGeneratingThreads.length; i++) {
             mazeGeneratingThreads[i] = new ThreadMazeGenerating(i);
@@ -46,8 +46,8 @@ public class RunCommunicateWithServers {
                 e.printStackTrace();
             }
         }
-*/
 
+/*
         MyMazeGenerator myMazeGenerator = new MyMazeGenerator();
         Maze maze = myMazeGenerator.generate(5,5);
 
@@ -68,7 +68,7 @@ public class RunCommunicateWithServers {
                 e.printStackTrace();
             }
         }
-
+*/
 
         //Communicating with servers
 

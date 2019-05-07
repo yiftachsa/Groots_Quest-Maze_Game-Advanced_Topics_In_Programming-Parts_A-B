@@ -9,6 +9,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
+    public static enum GeneratorType{Empty, Simple ,My}; //TODO: maze generator factory
+    public static enum SolverType{Empty, Simple ,My}; //TODO: maze generator factory
+
     private int port;
     private int listeningInterval;
     private IServerStrategy serverStrategy;
