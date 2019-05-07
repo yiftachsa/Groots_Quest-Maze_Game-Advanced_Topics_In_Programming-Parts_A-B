@@ -39,9 +39,10 @@ public class Maze implements Serializable {
     public Maze(byte[] bytes) {
         //TODO: recive the same format as outputed by toByteArray and initialize the fields.
         int size = 0;
+
         for (int i = bytes.length-1; i >= 0; i--) {
             if(bytes[i] !=0 ){
-                size = i+1;
+                size = i;
                 break;
             }
         }
@@ -348,9 +349,11 @@ public class Maze implements Serializable {
         for (int i = 0; i < testByteArray.length; i++) {
             mazeByteArray[i] = testByteArray[i];
         }
+
         AddMazeByteDetails(mazeByteArray);
 
         return mazeByteArray;
+
     }
 
     /**

@@ -25,6 +25,7 @@ public class MyDecompressorInputStream  extends InputStream {
 
     @Override
     public int read(byte[] mazeByteArray) throws IOException {
+
         ObjectInputStream objectInputStream = new ObjectInputStream(in);
         byte[] compressedMazeBytes = new byte[0];
         try {
@@ -50,6 +51,12 @@ public class MyDecompressorInputStream  extends InputStream {
         for (int i = 0; i < tempByteArray.length; i++) {
             mazeByteArray[i] = tempByteArray[i];
         }
+
+        if(tempByteArray.length<mazeByteArray.length)
+        {
+            mazeByteArray[tempByteArray.length]=1;
+        }
+        System.out.println();
         return 1;
     }
 
