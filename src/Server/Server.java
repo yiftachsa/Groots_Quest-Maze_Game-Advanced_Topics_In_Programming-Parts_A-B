@@ -22,9 +22,7 @@ public class Server {
     }
 
     public void start() {
-        new Thread(() -> {
-            runServer();
-        }).start();
+        new Thread(this::runServer).start();
     }
 
 
@@ -40,7 +38,7 @@ public class Server {
                 try {
                     Socket clientSocket = serverSocket.accept(); // blocking call
                     //LOG.info(String.format("Client excepted: %s", clientSocket));
-                    executor.execute(new Thread(() -> {handleClient(clientSocket);}));
+                    executor.execute(new Thread(() -> handleClient(clientSocket)));
                 } catch (SocketTimeoutException e) {
                     //LOG.debug("Socket Timeout - No clients pending!");
                 }
@@ -51,6 +49,7 @@ public class Server {
             //LOG.error("IOException", e);
         }
     }
+
 
     private void handleClient(Socket clientSocket) {
         try {
