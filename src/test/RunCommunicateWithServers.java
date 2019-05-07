@@ -7,6 +7,7 @@ import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
 import algorithms.search.AState;
 import algorithms.search.Solution;
+import sun.awt.Mutex;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -95,9 +96,7 @@ public class RunCommunicateWithServers {
                         is.read(decompressedMaze); //Fill decompressedMaze with bytes
                         Maze maze = new Maze(decompressedMaze);
                         //Mutex to protect the print
-                        synchronized (this) {
-                            maze.print();
-                        }
+                        maze.print();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

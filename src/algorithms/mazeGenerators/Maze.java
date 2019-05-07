@@ -1,6 +1,8 @@
 package algorithms.mazeGenerators;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Maze implements Serializable {
 
@@ -334,12 +336,17 @@ public class Maze implements Serializable {
      * @return
      */
     public byte[] toByteArray(){
-        String[] mazeByteStringArray = getMazeStrings();
+        //String[] mazeByteStringArray = getMazeStrings();
 
-        byte[] mazeByteArray = new byte[mazeByteStringArray.length + (6*4)];
+        byte[] testByteArray = getMazeBytes();
 
-        AddMazeByteValues(mazeByteStringArray, mazeByteArray);
+        byte[] mazeByteArray = new byte[testByteArray.length + (6*4)];
 
+        //AddMazeByteValues(mazeByteStringArray, mazeByteArray);
+
+        for (int i = 0; i < testByteArray.length; i++) {
+            mazeByteArray[i] = testByteArray[i];
+        }
         AddMazeByteDetails(mazeByteArray);
 
         return mazeByteArray;
@@ -416,4 +423,39 @@ public class Maze implements Serializable {
         mazeByteString += count;
         return mazeByteString.split(",");
     }
+
+
+    /**
+     * Converts the maze to a string array, in which the values represents the sequences of the maze's values.
+     * @return - String[]
+     */
+    private byte[] getMazeBytes() {
+        List<Byte> bytesList = new ArrayList<>(); //byte representation of the maze
+        int count = 0;
+        int lastDigit = 0;
+        //Beginning with zero
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[0].length; j++) {
+                if(maze[i][j] == lastDigit){
+                    count++;
+                    if (count == 256){
+                        bytesList.add(new Byte((byte) 255));
+                        bytesList.add(new Byte((byte) 0));
+                        count = 1;
+                    }
+                }else {
+                    lastDigit = maze[i][j];
+                    bytesList.add(new Byte((byte) count));
+                    count = 1;
+                }
+            }
+        }
+        bytesList.add(new Byte((byte) count));
+        byte[] result = new byte[bytesList.size()];
+        for (int i = 0; i < bytesList.size() ; i++) {
+            result[i] = bytesList.get(i);
+        }
+        return result;
+    }
+
 }
