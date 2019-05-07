@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Maze implements Serializable {
 
@@ -484,4 +485,18 @@ public class Maze implements Serializable {
         return result;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Maze)) return false;
+        Maze maze1 = (Maze) o;
+        return Arrays.equals(maze, maze1.maze) && startPosition.equals(maze1.startPosition) && goalPosition.equals(maze1.goalPosition);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = startPosition.hashCode()+goalPosition.hashCode();
+        result = 31 * result + Arrays.hashCode(maze);
+        return result;
+    }
 }

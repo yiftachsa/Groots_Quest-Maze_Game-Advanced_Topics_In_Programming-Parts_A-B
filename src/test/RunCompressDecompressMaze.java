@@ -2,10 +2,8 @@ package test;
 
 import IO.MyCompressorOutputStream;
 import IO.MyDecompressorInputStream;
-import algorithms.mazeGenerators.AMazeGenerator;
-import algorithms.mazeGenerators.EmptyMazeGenerator;
-import algorithms.mazeGenerators.Maze;
-import algorithms.mazeGenerators.MyMazeGenerator;
+import algorithms.mazeGenerators.*;
+
 import java.io.*;
 import java.util.Arrays;
 
@@ -15,8 +13,8 @@ public class RunCompressDecompressMaze {
 
 
             String mazeFileName = "savedMaze.maze";
-            AMazeGenerator mazeGenerator = new MyMazeGenerator();
-            Maze maze = mazeGenerator.generate(20, 20); //Generate new maze
+            AMazeGenerator mazeGenerator = new SimpleMazeGenerator();
+            Maze maze = mazeGenerator.generate(1000, 1000); //Generate new maze
             // System.out.println("\nBefore:\n" + maze.getRowLength() + ", " + maze.getColumnLength());
             // maze.print();
         /*

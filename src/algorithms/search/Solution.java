@@ -43,4 +43,8 @@ public class Solution implements Serializable {
         return solutionPath;
     }
 
+    @Override
+    public String toString() {
+        return "solutionState - final position: " + solutionState;
+    }
 }

@@ -28,7 +28,7 @@ public class RunCommunicateWithServers {
 
 
         //Threads initialization
-
+/*
         Thread[] mazeGeneratingThreads = new Thread[10];
         for (int i = 0; i < mazeGeneratingThreads.length; i++) {
             mazeGeneratingThreads[i] = new ThreadMazeGenerating(i);
@@ -46,15 +46,17 @@ public class RunCommunicateWithServers {
                 e.printStackTrace();
             }
         }
+*/
+        MyMazeGenerator myMazeGenerator = new MyMazeGenerator();
+        Maze maze = myMazeGenerator.generate(5,5);
 
-/*
         Thread[] solveSearchThreads = new Thread[10];
         for (int i = 0; i < solveSearchThreads.length; i++) {
-            solveSearchThreads[i] = new ThreadMazeGenerating(i);
+            solveSearchThreads[i] = new ThreadSolveSearchProblem(i);
         }
         //Threads start
         for (int i = 0; i < solveSearchThreads.length; i++) {
-            System.out.println("\n SolveSearchProblem | Thread index: "+threadId+" Thread Id: "+ Thread.currentThread().getId());
+            System.out.println("\n SolveSearchProblem | Thread index: "+ i +" Thread Id: "+ Thread.currentThread().getId());
             solveSearchThreads[i].start();
         }
         //Wait for all the threads to join
@@ -65,7 +67,7 @@ public class RunCommunicateWithServers {
                 e.printStackTrace();
             }
         }
-        */
+
 
         //Communicating with servers
 
@@ -87,7 +89,7 @@ public class RunCommunicateWithServers {
                         ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                         toServer.flush();
                         int[] mazeDimensions = new int[]{row, column};
-                        int maxToByteArray = (row*column) + (6*4);
+                        int maxToByteArray = (row*column) + (6*4)+1;
                         toServer.writeObject(mazeDimensions); //send mazedimensions to server
                         toServer.flush();
                         byte[] compressedMaze = (byte[]) fromServer.readObject(); //read generated maze (compressed with MyCompressor) from server
@@ -124,6 +126,34 @@ public class RunCommunicateWithServers {
                         toServer.flush();
                         Solution mazeSolution = (Solution) fromServer.readObject(); //read generated maze (compressed with MyCompressor) from server
                                 //Print Maze Solution retrieved from the server
+                        System.out.println(String.format("Solution steps: %s", mazeSolution));
+                        ArrayList<AState> mazeSolutionSteps = mazeSolution.getSolutionPath();
+                        for (int i = 0; i < mazeSolutionSteps.size(); i++) {
+                            System.out.println(String.format("%s. %s", i, mazeSolutionSteps.get(i).toString()));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            client.communicateWithServer();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+    private static void CommunicateWithServer_SolveSameSearchProblem(Maze maze) {
+        try {
+            Client client = new Client(InetAddress.getLocalHost(), 5401, new IClientStrategy() {
+                @Override
+                public void clientStrategy(InputStream inFromServer, OutputStream outToServer) {
+                    try {
+                        ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
+                        ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
+                        toServer.flush();
+                        toServer.writeObject(maze); //send maze to server
+                        toServer.flush();
+                        Solution mazeSolution = (Solution) fromServer.readObject(); //read generated maze (compressed with MyCompressor) from server
+                        //Print Maze Solution retrieved from the server
                         System.out.println(String.format("Solution steps: %s", mazeSolution));
                         ArrayList<AState> mazeSolutionSteps = mazeSolution.getSolutionPath();
                         for (int i = 0; i < mazeSolutionSteps.size(); i++) {
@@ -184,13 +214,21 @@ public class RunCommunicateWithServers {
 
     private static class ThreadSolveSearchProblem extends Thread {
         private int threadId;
+        private Maze maze;
+
+        public ThreadSolveSearchProblem(int threadId, Maze maze) {
+            this.threadId = threadId;
+            this.maze = maze;
+        }
 
         public ThreadSolveSearchProblem(int threadId) {
             this.threadId = threadId;
+            MyMazeGenerator mazeGenerator = new MyMazeGenerator();
+            this.maze = mazeGenerator.generate(50,50);
         }
 
         public void run(){
-            CommunicateWithServer_SolveSearchProblem(50,50);
+            CommunicateWithServer_SolveSameSearchProblem(maze);
         }
     }
 }

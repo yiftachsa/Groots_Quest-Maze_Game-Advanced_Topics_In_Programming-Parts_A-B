@@ -15,7 +15,6 @@ import java.util.HashSet;
 public class ServerStrategySolveSearchProblem implements IServerStrategy {
 
     private static int fileIndex = 0;
-    //TODO: decide if we should hold a data structure in memory to save retrial time.
     private static HashMap<Integer,Integer> previouslySolved= new HashMap<>();
 
     @Override
