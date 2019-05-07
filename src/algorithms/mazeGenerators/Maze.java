@@ -59,6 +59,7 @@ public class Maze implements Serializable {
          */
         int[] mazeDetails = getMazeDetailsFromByte(detailsByteArray);
 
+
         maze=new int [mazeDetails[0]][mazeDetails[1]]; //rows, columns
         startPosition = new Position(mazeDetails[2],mazeDetails[3]); //startRow, startColumn
         goalPosition = new Position(mazeDetails[4],mazeDetails[5]); //goalRow,goalColumn
@@ -377,8 +378,29 @@ public class Maze implements Serializable {
         int startColumn = startPosition.getColumnIndex();
         int goalRow = goalPosition.getRowIndex();
         int goalColumn = goalPosition.getColumnIndex();
+        byte[] result = new byte[6*4];
 
-        int[] mazeDetails = {rows, columns, startRow,startColumn,goalRow,goalColumn};
+        int[] mazeDetails = {rows, columns, startRow, startColumn, goalRow, goalColumn};
+        int index=0;
+        //From int TO byte
+        for (int i = 0; i < mazeDetails.length; i++) {
+            String byteString = Integer.toBinaryString(mazeDetails[i]);
+            while (byteString.length()<32){
+                byteString = "0" + byteString;
+            }
+            for (int j = 0; j < 32; j= j+8) {
+                String stringByte = byteString.substring(j, j+8);
+                int intValue = Integer.parseInt(stringByte,2);
+                byte byteValue = (byte)intValue;
+                result[index++] = byteValue;
+            }
+        }
+        int counter = (mazeByteArray.length - (6*4));
+        for (int i = 0; i < result.length; i++) {
+            mazeByteArray[counter++] = result[i];
+        }
+
+        /*
         int counter = (mazeByteArray.length - (6*4));
         //From int TO byte
         for (int i = 0; i < mazeDetails.length; i++) {
@@ -394,6 +416,7 @@ public class Maze implements Serializable {
             }
 
         }
+        */
     }
 
     /**

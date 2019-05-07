@@ -89,7 +89,7 @@ public class MyCompressorOutputStream extends OutputStream {
         //resultTEMP = result;
         //dictionaryTEMP = dictionary;
         //From int TO byte
-        //TODO: maybe need only 3 bit's, change byteResult size to result.size()*4 , byteString size to 24 , j=24
+        //TODO: maybe need only 3 byte's, change byteResult size to result.size()*4 , byteString size to 24 , j=24
         byte [] byteResult = new byte[result.size()*5];
         int index=0;
         for (int i = 0; i < result.size(); i++) {

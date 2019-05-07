@@ -16,7 +16,7 @@ public class RunCompressDecompressMaze {
 
             String mazeFileName = "savedMaze.maze";
             AMazeGenerator mazeGenerator = new MyMazeGenerator();
-            Maze maze = mazeGenerator.generate(27, 27); //Generate new maze
+            Maze maze = mazeGenerator.generate(20, 20); //Generate new maze
             // System.out.println("\nBefore:\n" + maze.getRowLength() + ", " + maze.getColumnLength());
             // maze.print();
         /*
