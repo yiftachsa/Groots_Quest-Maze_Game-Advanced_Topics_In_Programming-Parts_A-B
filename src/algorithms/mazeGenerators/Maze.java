@@ -439,18 +439,18 @@ public class Maze implements Serializable {
                 if(maze[i][j] == lastDigit){
                     count++;
                     if (count == 256){
-                        bytesList.add(new Byte((byte) 255));
-                        bytesList.add(new Byte((byte) 0));
+                        bytesList.add((byte) 255);
+                        bytesList.add((byte) 0);
                         count = 1;
                     }
                 }else {
                     lastDigit = maze[i][j];
-                    bytesList.add(new Byte((byte) count));
+                    bytesList.add((byte) count);
                     count = 1;
                 }
             }
         }
-        bytesList.add(new Byte((byte) count));
+        bytesList.add((byte) count);
         byte[] result = new byte[bytesList.size()];
         for (int i = 0; i < bytesList.size() ; i++) {
             result[i] = bytesList.get(i);
