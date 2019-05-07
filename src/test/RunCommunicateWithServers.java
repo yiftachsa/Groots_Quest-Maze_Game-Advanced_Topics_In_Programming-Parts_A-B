@@ -25,10 +25,51 @@ public class RunCommunicateWithServers {
         mazeGeneratingServer.start();
         //stringReverserServer.start();
 
+
+        //Threads initialization
+
+        Thread[] mazeGeneratingThreads = new Thread[10];
+        for (int i = 0; i < mazeGeneratingThreads.length; i++) {
+            mazeGeneratingThreads[i] = new ThreadMazeGenerating(i);
+        }
+        //Threads start
+        for (int i = 0; i < mazeGeneratingThreads.length; i++) {
+            System.out.println("\nMazeGenerating | Thread index: "+i+" Thread Id: "+ Thread.currentThread().getId());
+            mazeGeneratingThreads[i].start();
+        }
+        //Wait for all the threads to join
+        for (int i = 0; i < mazeGeneratingThreads.length; i++) {
+            try{
+                mazeGeneratingThreads[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+/*
+        Thread[] solveSearchThreads = new Thread[10];
+        for (int i = 0; i < solveSearchThreads.length; i++) {
+            solveSearchThreads[i] = new ThreadMazeGenerating(i);
+        }
+        //Threads start
+        for (int i = 0; i < solveSearchThreads.length; i++) {
+            System.out.println("\n SolveSearchProblem | Thread index: "+threadId+" Thread Id: "+ Thread.currentThread().getId());
+            solveSearchThreads[i].start();
+        }
+        //Wait for all the threads to join
+        for (int i = 0; i < solveSearchThreads.length; i++) {
+            try{
+                solveSearchThreads[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        */
+
         //Communicating with servers
 
-        CommunicateWithServer_MazeGenerating(100,100);
-        CommunicateWithServer_SolveSearchProblem(100, 100);
+        //CommunicateWithServer_MazeGenerating(100,100);
+        //CommunicateWithServer_SolveSearchProblem(100, 100);
         //CommunicateWithServer_StringReverser();
         //Stopping all servers
         mazeGeneratingServer.stop();
@@ -53,7 +94,10 @@ public class RunCommunicateWithServers {
                         byte[] decompressedMaze = new byte[maxToByteArray /*CHANGE SIZE ACCORDING TO YOU MAZE SIZE*/]; //allocating byte[] for the decompressed maze -
                         is.read(decompressedMaze); //Fill decompressedMaze with bytes
                         Maze maze = new Maze(decompressedMaze);
-                        maze.print();
+                        //Mutex to protect the print
+                        synchronized (this) {
+                            maze.print();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -121,6 +165,33 @@ public class RunCommunicateWithServers {
             client.communicateWithServer();
         } catch (UnknownHostException e) {
             e.printStackTrace();
+        }
+    }
+    private static class ThreadMazeGenerating extends Thread {
+        private int threadId;
+
+        public ThreadMazeGenerating(int threadId) {
+            this.threadId = threadId;
+        }
+
+        public int getThreadId() {
+            return threadId;
+        }
+
+        public void run(){
+            CommunicateWithServer_MazeGenerating(50,50);
+        }
+    }
+
+    private static class ThreadSolveSearchProblem extends Thread {
+        private int threadId;
+
+        public ThreadSolveSearchProblem(int threadId) {
+            this.threadId = threadId;
+        }
+
+        public void run(){
+            CommunicateWithServer_SolveSearchProblem(50,50);
         }
     }
 }

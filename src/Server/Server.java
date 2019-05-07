@@ -46,6 +46,7 @@ public class Server {
                 }
             }
             serverSocket.close();
+            executor.shutdown();
         } catch (IOException e) {
             //LOG.error("IOException", e);
         }
