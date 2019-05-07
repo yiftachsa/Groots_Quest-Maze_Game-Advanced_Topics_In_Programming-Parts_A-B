@@ -11,12 +11,12 @@ import java.util.Arrays;
 
 public class RunCompressDecompressMaze {
     public static void main(String[] args) {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
 
 
             String mazeFileName = "savedMaze.maze";
             AMazeGenerator mazeGenerator = new MyMazeGenerator();
-            Maze maze = mazeGenerator.generate(27, 27); //Generate new maze
+            Maze maze = mazeGenerator.generate(20, 20); //Generate new maze
             // System.out.println("\nBefore:\n" + maze.getRowLength() + ", " + maze.getColumnLength());
             // maze.print();
         /*
@@ -43,7 +43,7 @@ public class RunCompressDecompressMaze {
                 //read maze from file
                 InputStream in = new MyDecompressorInputStream(new
                         FileInputStream(mazeFileName));
-                savedMazeBytes = new byte[maze.getRowLength()*maze.getColumnLength()+6*4];
+                savedMazeBytes = new byte[maze.getRowLength()*maze.getColumnLength()+6*4+1];
                 in.read(savedMazeBytes);
                 in.close();
             } catch (IOException e) {
