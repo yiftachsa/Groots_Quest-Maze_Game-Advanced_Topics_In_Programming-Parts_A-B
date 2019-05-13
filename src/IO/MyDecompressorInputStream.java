@@ -51,11 +51,12 @@ public class MyDecompressorInputStream  extends InputStream {
         for (int i = 0; i < tempByteArray.length; i++) {
             mazeByteArray[i] = tempByteArray[i];
         }
-
+    /*
         if(tempByteArray.length<mazeByteArray.length)
         {
             mazeByteArray[tempByteArray.length]=1;
         }
+        */
         return 1;
     }
 
