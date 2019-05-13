@@ -39,7 +39,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             } else {
                 //Generate new solution
                 SearchableMaze searchableClientMaze = new SearchableMaze(clientMaze);
-                ASearchingAlgorithm searchingAlgorithm = Server.Configurations.getSolver("SolverType");
+                ASearchingAlgorithm searchingAlgorithm = Configurations.getSolver("SolverType");
                 Solution newSolution = searchingAlgorithm.solve(searchableClientMaze);
                 toClient.writeObject(newSolution);
 

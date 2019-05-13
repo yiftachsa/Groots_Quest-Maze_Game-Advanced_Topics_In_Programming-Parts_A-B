@@ -20,7 +20,7 @@ public class ServerStrategyGenerateMaze implements IServerStrategy {
             int[] mazeSpecs = (int[])fromClient.readObject();
             Maze maze;
             if (mazeSpecs != null && mazeSpecs.length ==2){
-                AMazeGenerator mazeGenerator = Server.Configurations.getGenerator("GeneratorType");
+                AMazeGenerator mazeGenerator = Configurations.getGenerator("GeneratorType");
                 maze = mazeGenerator.generate(mazeSpecs[0], mazeSpecs[1]);
                 byte[] mazeByteArray = maze.toByteArray();
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
