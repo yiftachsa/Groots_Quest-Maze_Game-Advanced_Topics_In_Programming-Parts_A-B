@@ -14,7 +14,8 @@ public class RunCompressDecompressMaze {
 
             String mazeFileName = "savedMaze.maze";
             AMazeGenerator mazeGenerator = new SimpleMazeGenerator();
-            Maze maze = mazeGenerator.generate(1000, 1000); //Generate new maze
+            Maze maze = mazeGenerator.generate(50, 50); //Generate new maze
+            System.out.printf("WOW");
             // System.out.println("\nBefore:\n" + maze.getRowLength() + ", " + maze.getColumnLength());
             // maze.print();
         /*
@@ -54,6 +55,7 @@ public class RunCompressDecompressMaze {
             //  System.out.println("\nAfter:\n " + loadedMaze.getRowLength() + ", " + loadedMaze.getColumnLength());
             //  loadedMaze.print();
             System.out.println(String.format("\n Mazes equal: %s",areMazesEquals));
+            System.out.println("Iteration: "+i);
             //maze should be equal to loadedMaze
         }
     }

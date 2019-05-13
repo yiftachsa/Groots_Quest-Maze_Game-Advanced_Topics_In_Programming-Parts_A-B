@@ -29,7 +29,7 @@ public class RunCommunicateWithServers {
 
         //Threads initialization
 
-        Thread[] mazeGeneratingThreads = new Thread[10];
+        Thread[] mazeGeneratingThreads = new Thread[1];
         for (int i = 0; i < mazeGeneratingThreads.length; i++) {
             mazeGeneratingThreads[i] = new ThreadMazeGenerating(i);
         }

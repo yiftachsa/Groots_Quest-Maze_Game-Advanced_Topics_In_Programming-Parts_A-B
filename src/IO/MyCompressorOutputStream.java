@@ -122,7 +122,7 @@ public class MyCompressorOutputStream extends OutputStream {
         objectOutputStream.writeObject(byteResult);
     }
 
-
+/*
     public static void main(String[] args) throws IOException {
 
         byte [] test = {1,0,1,1,0,-1,127,-127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,1,0,127,127,127,11,10,1,0,1,1,0,127,127,127,11,10,1,0,1,0,1,0,0,1,0,11,0,1,0,0,1,0,1,0,1,0,0,1,0,11,0,1,0,0};
@@ -134,15 +134,15 @@ public class MyCompressorOutputStream extends OutputStream {
         InputStream in = new PipedInputStream();
         MyDecompressorInputStream testMainDecompressor = new MyDecompressorInputStream(in);
         List<Pair<Integer, Integer>> decompressList= testMainDecompressor.fromByteToPairs(testMainCompressor.resultTEMP3);
-        /*
+
         System.out.println("after fromByteToPairs");
         for (int i = 0; i < decompressList.size(); i++) {
             System.out.print("("+decompressList.toArray()[i]+")           ,");
         }
-        */
+
         testMainDecompressor.read(testMainCompressor.resultTEMP2);
     }
-
+*/
     @Override
     public void write(int argByte) throws IOException {
         byte[] bytes = BigInteger.valueOf(argByte).toByteArray();

@@ -65,7 +65,7 @@ public class SimpleMazeGenerator extends AMazeGenerator{
      */
     private int goalFunction(Maze maze)
     {
-        return (int)Math.pow(maze.getColumnLength()+maze.getRowLength(), 0.75);
+        return (int)Math.pow(maze.getColumnLength()+maze.getRowLength(), 0.5);
     }
 
     /**
@@ -108,6 +108,7 @@ public class SimpleMazeGenerator extends AMazeGenerator{
         //Generate the next random move
         moveType move = RandomMove();
         Position nextPosition = Move(move, currentPosition);
+
         /*
          * Recursively search for a path in four directions,
          * starting with the random move that was generated.
