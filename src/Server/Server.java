@@ -1,16 +1,20 @@
 package Server;
 
+import algorithms.mazeGenerators.*;
+import algorithms.search.*;
+
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-    public static enum GeneratorType{Empty, Simple ,My}; //TODO: maze generator factory
-    public static enum SolverType{Empty, Simple ,My}; //TODO: maze generator factory
 
     private int port;
     private int listeningInterval;
@@ -33,7 +37,7 @@ public class Server {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             serverSocket.setSoTimeout(listeningInterval);
-            executor = Executors.newFixedThreadPool(4);
+            executor = Executors.newFixedThreadPool(Configurations.getThreadPoolSize("ThreadPoolSize"));
             //LOG.info(String.format("Server starter at %s!", serverSocket));
             //LOG.info(String.format("Server's Strategy: %s", serverStrategy.getClass().getSimpleName()));
             //LOG.info("Server is waiting for clients...");
@@ -66,5 +70,69 @@ public class Server {
     public void stop() {
         //LOG.info("Stopping server..");
         stop = true;
+    }
+
+    public static class Configurations{
+        private static enum GeneratorType{Empty, Simple ,My}; //TODO: maze generator factory
+        private static enum SolverType{Best, BFS, DFS}; //TODO: maze generator factory
+
+        private static Properties properties;
+
+        private Configurations(){
+        }
+
+        private static void initializeProperties(){
+            try(InputStream inputStream = new FileInputStream(".\\resources\\config.properties")){
+                properties = new Properties();
+                properties.load(inputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public static String getProperties(String key) {
+            if (properties != null){
+                return properties.getProperty(key);
+            }
+            initializeProperties();
+            return properties.getProperty(key);
+        }
+
+        public static ASearchingAlgorithm getSolver(String key){
+            if (properties == null) {
+                initializeProperties();
+            }
+            SolverType solverType = SolverType.valueOf(properties.getProperty(key));
+            if (solverType.equals("Best")){
+                return new BestFirstSearch();
+            }else if (solverType.equals("BFS")){
+                return new BreadthFirstSearch();
+            }else {
+                return new DepthFirstSearch();
+            }
+        }
+
+        public static int getThreadPoolSize(String key) {
+            if (properties == null) {
+                initializeProperties();
+            }
+            return Integer.parseInt(properties.getProperty(key));
+        }
+
+
+        public static AMazeGenerator getGenerator(String key){
+            if (properties == null) {
+                initializeProperties();
+            }
+            GeneratorType generatorType = GeneratorType.valueOf(properties.getProperty(key));
+            if (generatorType.equals("My")){
+                return new MyMazeGenerator();
+            }else if (generatorType.equals("Simple")){
+                return new SimpleMazeGenerator();
+            }else {
+                return new EmptyMazeGenerator();
+            }
+        }
+
     }
 }
