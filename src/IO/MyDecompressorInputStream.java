@@ -51,16 +51,17 @@ public class MyDecompressorInputStream  extends InputStream {
         for (int i = 0; i < tempByteArray.length; i++) {
             mazeByteArray[i] = tempByteArray[i];
         }
-
+    /*
         if(tempByteArray.length<mazeByteArray.length)
         {
             mazeByteArray[tempByteArray.length]=1;
         }
-        return 1;
+        */
+        return tempByteArray.length;
     }
 
     /**
-     * Recives compressed byte array and return a list of pairs.
+     * Receives compressed byte array and return a list of pairs.
      * @param compressedMazeBytes - byte[]
      * @return - List<Pair<Integer, Integer>>
      */
@@ -82,10 +83,6 @@ public class MyDecompressorInputStream  extends InputStream {
         return compressedMazePairs;
     }
 
-    //public List<Pair<Integer,Integer>> read(byte[] bytes) {
-
-    //    return null;
-    //}
     /*
         // Build the dictionary.
         int dictSize = 0;
@@ -145,16 +142,17 @@ public class MyDecompressorInputStream  extends InputStream {
         return null;
     }
     */
+
+    /**
+     *  Receives list of pairs and return a byte array after decompression (according to LZ78).
+     * @param compressed - List<Pair<Integer, Integer>>
+     * @return - byte[] - after decompression
+     */
     public byte[] read(List<Pair<Integer,Integer>> compressed) {
         List<String> decopressedPairsList=new ArrayList<String>();
         decopressedPairsList.add("NULL");
         int numberOfByte=0;
         for (int i = 0; i < compressed.size(); i++) {
-            /*for (int j = 0; j < compressed.get(i).getKey()-1; j++) {
-                int check=decopressedPairsList.get(compressed.get(i).getKey()+j);
-                decopressedPairsList.add(decopressedPairsList.get(compressed.get(i).getKey()+j));
-            }
-            */
             if(compressed.get(i).getKey()!=0){
                 decopressedPairsList.add(decopressedPairsList.get(compressed.get(i).getKey())+","+compressed.get(i).getValue()+"");
                 numberOfByte=numberOfByte+decopressedPairsList.get(i+1).length()-decopressedPairsList.get(i+1).replace(",","").length()+1;
@@ -177,13 +175,6 @@ public class MyDecompressorInputStream  extends InputStream {
                 k++;
             }
         }
-        /*
-        System.out.println("\n" + "after decompression: ");
-        for (int i = 0; i < decompressedByteArray.length; i++) {
-            System.out.print(decompressedByteArray[i]);
-        }
-        */
-
         return decompressedByteArray;
     }
 }

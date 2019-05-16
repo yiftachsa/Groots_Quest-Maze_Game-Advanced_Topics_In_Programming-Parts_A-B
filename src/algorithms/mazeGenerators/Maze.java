@@ -38,23 +38,22 @@ public class Maze implements Serializable {
      * @param bytes
      */
     public Maze(byte[] bytes) {
-        //TODO: recive the same format as outputed by toByteArray and initialize the fields.
+        //Receive the same format as outputted by toByteArray and initialize the fields.
         int size = 0;
 
         for (int i = bytes.length-1; i >= 0; i--) {
             if(bytes[i] !=0 ){
-                size = i;
+                size = i+1;
                 break;
             }
         }
-
         byte[] mazeByteArray = new byte[size - (6*4)];
         for (int i = 0; i < mazeByteArray.length; i++) {
-            mazeByteArray[i] = bytes[i];
+            mazeByteArray[i] = bytes[i + (6*4)];
         }
         byte[] detailsByteArray = new byte[(6*4)];
         for (int i = 0; i < (6*4); i++) {
-            detailsByteArray[i] = bytes[i+mazeByteArray.length];
+            detailsByteArray[i] = bytes[i];
         }
         /**
          * mazeDetails = {rows, columns, startRow,startColumn,goalRow,goalColumn};
@@ -341,14 +340,15 @@ public class Maze implements Serializable {
     public byte[] toByteArray(){
         //String[] mazeByteStringArray = getMazeStrings();
 
-        byte[] testByteArray = getMazeBytes();
+        byte[] byteArray = getMazeBytes();
 
-        byte[] mazeByteArray = new byte[testByteArray.length + (6*4)];
+        byte[] mazeByteArray = new byte[byteArray.length + (6*4)];
 
         //AddMazeByteValues(mazeByteStringArray, mazeByteArray);
+        int index = 0;
+        for (int i = (6*4); i < mazeByteArray.length; i++) {
+            mazeByteArray[i] = byteArray[ index++];
 
-        for (int i = 0; i < testByteArray.length; i++) {
-            mazeByteArray[i] = testByteArray[i];
         }
 
         AddMazeByteDetails(mazeByteArray);
@@ -399,9 +399,9 @@ public class Maze implements Serializable {
                 result[index++] = byteValue;
             }
         }
-        int counter = (mazeByteArray.length - (6*4));
+        //int counter = (mazeByteArray.length - (6*4));
         for (int i = 0; i < result.length; i++) {
-            mazeByteArray[counter++] = result[i];
+            mazeByteArray[i] = result[i];
         }
 
         /*
