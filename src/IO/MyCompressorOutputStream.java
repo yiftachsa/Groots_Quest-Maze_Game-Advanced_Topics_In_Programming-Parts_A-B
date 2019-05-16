@@ -14,25 +14,14 @@ public class MyCompressorOutputStream extends OutputStream {
 
     private OutputStream out;
 
-    public List<Pair<Integer,Integer>> resultTEMP2 = new ArrayList<Pair<Integer,Integer>>();
-    byte[] resultTEMP3;
-
     public MyCompressorOutputStream(OutputStream outputStream) {
         out = outputStream;
     }
 
-
     @Override
     public void write(byte[] bytes) throws IOException {
-        /*
-        System.out.println("before compression: ");
-        for (int i = 0; i < bytes.length; i++) {
-            System.out.print(bytes[i]);
-        }
-        */
-
         // Build the dictionary.
-        int dictSize = 1; //###!!!
+        int dictSize = 1;
         int resultInd=0;
         int counter=0;
         Map<List<Byte>, Integer> dictionary = new HashMap<List<Byte>, Integer>();
@@ -80,14 +69,7 @@ public class MyCompressorOutputStream extends OutputStream {
                 //currentBytes.add(b);
             }
         }
-        resultTEMP2=result;
-        // Output the code for w.
-        //if (currentBytes.size()!=0)
-        //    result.add(dictionary.get(currentBytes));
-        // return result;
 
-        //resultTEMP = result;
-        //dictionaryTEMP = dictionary;
         //From int TO byte
         //TODO: maybe need only 3 byte's, change byteResult size to result.size()*4 , byteString size to 24 , j=24
         byte [] byteResult = new byte[result.size()*5];
@@ -107,7 +89,7 @@ public class MyCompressorOutputStream extends OutputStream {
             byteResult[index++]=addValue;
         }
 
-        resultTEMP3 = byteResult;
+
         /*
         System.out.println("\n"+"after compression: ");
         for (int i = 0; i < result.size(); i++) {

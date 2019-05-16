@@ -57,7 +57,7 @@ public class MyDecompressorInputStream  extends InputStream {
             mazeByteArray[tempByteArray.length]=1;
         }
         */
-        return tempByteArray.length;
+        return compressedMazeBytes.length;
     }
 
     /**
