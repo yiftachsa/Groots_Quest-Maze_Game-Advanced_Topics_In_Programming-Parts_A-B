@@ -11,8 +11,8 @@ public class ServerStrategyGenerateMaze implements IServerStrategy {
 
     /**
      * Receives maze dimensions, builds a maze according to those dimensions and returns it to the client.
-     * @param inFromClient
-     * @param outToClient
+     * @param inFromClient - InputStream
+     * @param outToClient - OutputStream
      */
     @Override
     public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
