@@ -94,13 +94,14 @@ public class Maze implements Serializable {
     }
 
     /**
-     *
-     * @param detailsByteArray
-     * @return
+     * Receives a byte array of the details in which each integer value is divided into 4 separate bytes.
+     * recreates each integer and returns an int array with the corresponding values.
+     * @param detailsByteArray = byte[]
+     * @return - int[] - mazeDetails = {rows, columns, startRow,startColumn,goalRow,goalColumn}
      */
     private int[] getMazeDetailsFromByte(byte[] detailsByteArray) {
         /**
-         * mazeDetails = {rows, columns, startRow,startColumn,goalRow,goalColumn};
+         * mazeDetails = {rows, columns, startRow,startColumn,goalRow,goalColumn}
          */
         int[] mazeDetails = new int[6];
         for (int i = 0; i < 6; i++) {
@@ -335,7 +336,7 @@ public class Maze implements Serializable {
 
     /**
      * convert maze details to byte array and implement the algorithm that they suggested.
-     * @return
+     * @return - byte[]
      */
     public byte[] toByteArray(){
         //String[] mazeByteStringArray = getMazeStrings();
@@ -356,12 +357,12 @@ public class Maze implements Serializable {
         return mazeByteArray;
 
     }
-
+/*
     /**
      * adds the values of the maze from mazeByteStringArray to mazeByteArray
-     * @param mazeByteStringArray
+     * @param mazeByteStringArray - String[]
      * @param mazeByteArray
-     */
+
     private void AddMazeByteValues(String[] mazeByteStringArray, byte[] mazeByteArray) {
         for (int i = 0; i < mazeByteStringArray.length; i++) {
             int intValue = Integer.parseInt(mazeByteStringArray[i]);
@@ -369,10 +370,10 @@ public class Maze implements Serializable {
             mazeByteArray[i] = byteValue;
         }
     }
+*/
 
     /**
      * Adds all the maze details to the given byte array. assumes that there is at least 6 free entries.
-     *
      * @param mazeByteArray - byte[]
      */
     private void AddMazeByteDetails(byte[] mazeByteArray) {
@@ -423,10 +424,11 @@ public class Maze implements Serializable {
         */
     }
 
+/*
     /**
      * Converts the maze to a string array, in which the values represents the sequences of the maze's values.
      * @return - String[]
-     */
+
     private String[] getMazeStrings() {
         String mazeByteString = ""; //byte representation of the maze
         int count = 0;
@@ -450,7 +452,7 @@ public class Maze implements Serializable {
         mazeByteString += count;
         return mazeByteString.split(",");
     }
-
+*/
 
     /**
      * Converts the maze to a string array, in which the values represents the sequences of the maze's values.

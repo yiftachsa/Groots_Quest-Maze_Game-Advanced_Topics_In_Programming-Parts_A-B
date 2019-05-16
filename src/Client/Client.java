@@ -10,12 +10,21 @@ public class Client {
     private int serverPort;
     private IClientStrategy clientStrategy;
 
+    /**
+     * Constructor
+     * @param serverIP - InetAddress - destination server IP
+     * @param serverPort - int - destination server port
+     * @param clientStrategy - IClientStrategy
+     */
     public Client(InetAddress serverIP, int serverPort, IClientStrategy clientStrategy) {
         this.serverIP = serverIP;
         this.serverPort = serverPort;
         this.clientStrategy = clientStrategy;
     }
 
+    /**
+     *  Activates the client using the client strategy.
+     */
     public void start() {
         try {
             Socket theServer = new Socket(serverIP, serverPort);
@@ -27,7 +36,10 @@ public class Client {
         }
     }
 
+    /**
+     * Starts communicate with the server - calls this.start
+     */
     public void communicateWithServer() {
-        start(); // TODO: Check!!!
+        start();
     }
 }

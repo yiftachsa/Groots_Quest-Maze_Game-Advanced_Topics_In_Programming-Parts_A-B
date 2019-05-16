@@ -9,8 +9,12 @@ import java.io.*;
 
 public class ServerStrategyGenerateMaze implements IServerStrategy {
 
+    /**
+     * Receives maze dimensions, builds a maze according to those dimensions and returns it to the client.
+     * @param inFromClient
+     * @param outToClient
+     */
     @Override
-    
     public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
         try {
             ObjectInputStream fromClient = new ObjectInputStream(inFromClient);

@@ -22,17 +22,28 @@ public class Server {
     private volatile boolean stop;
     private ExecutorService executor;
 
+    /**
+     * Constructor
+     * @param port - int - the server's listening port
+     * @param listeningInterval - int
+     * @param serverStrategy - IServerStrategy - serverStrategy
+     */
     public Server(int port, int listeningInterval, IServerStrategy serverStrategy) {
         this.port = port;
         this.listeningInterval = listeningInterval;
         this.serverStrategy = serverStrategy;
     }
 
+    /**
+     * Starts a new thread which runs sunServer
+     */
     public void start() {
         new Thread(this::runServer).start();
     }
 
-
+    /**
+     * Starting the server
+     */
     private void runServer() {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
@@ -58,6 +69,10 @@ public class Server {
         }
     }
 
+    /**
+     * Activates the server strategy using the given client socket.
+     * @param clientSocket - Socket
+     */
     private void handleClient(Socket clientSocket) {
         try {
             //LOG.info(String.format("Handling client with socket: %s", clientSocket.toString()));
@@ -68,6 +83,9 @@ public class Server {
         }
     }
 
+    /**
+     * Stops the server and shuts it down
+     */
     public void stop() {
         //LOG.info("Stopping server..");
         stop = true;

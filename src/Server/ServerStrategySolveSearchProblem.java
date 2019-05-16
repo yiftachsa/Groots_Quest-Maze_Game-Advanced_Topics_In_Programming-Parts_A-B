@@ -15,8 +15,14 @@ import java.util.HashSet;
 public class ServerStrategySolveSearchProblem implements IServerStrategy {
 
     private static int fileIndex = 0;
+    //TODO: Change to ConcurrentHashMap or to SynchronizedHashMap or to SynchronizedMap
     private static HashMap<Integer,Integer> previouslySolved= new HashMap<>();
 
+    /**
+     * Receives a maze from client, Solves it and returns the solution
+     * @param inFromClient - InputStream
+     * @param outToClient - OutputStream
+     */
     @Override
     public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
         try {
@@ -27,7 +33,11 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             //MyDecompressorInputStream decompressor = new MyDecompressorInputStream(fromClient);
             //byte[] decompressedSearchProblem = new byte[0];
             //decompressor.read(decompressedSearchProblem);
+
+            //receive the maze from the client
+            //TODO: Try and receive an interface (ISearchable) instead!!!
             Maze clientMaze = (Maze)fromClient.readObject();
+
             int key = clientMaze.hashCode();
 
             //TODO: decide if we should hold a data structure in memory to save retrial time.
@@ -35,7 +45,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             if (previouslySolved.containsKey(key)){
                 int previousSolutionIndex = previouslySolved.get(key);
                 Solution previousSolution = retrieveExistingSolutionFromFile(previousSolutionIndex);
-                toClient.writeObject(previousSolution); //if previousSolution is Solution TODO:Check in the lecture, maybe Solution should be serializable
+                toClient.writeObject(previousSolution); //if previousSolution is Solution
             } else {
                 //Generate new solution
                 SearchableMaze searchableClientMaze = new SearchableMaze(clientMaze);
@@ -61,6 +71,11 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
         }
     }
 
+    /**
+     * saves a solution to file
+     * @param newSolution - Solution
+     * @param solutionFileName - String
+     */
     private void saveSolutionToFile(Solution newSolution, String solutionFileName) {
         // save solution to a file
         try {
@@ -75,7 +90,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
     }
     private Solution retrieveExistingSolutionFromFile(int fileIndex) {
         String tempDirectoryPath = System.getProperty("java.io.tmpdir");
-        String solutionFileName = tempDirectoryPath + "\\Solution" + fileIndex + ".sol"; //TODO: Check path
+        String solutionFileName = tempDirectoryPath + "\\Solution" + fileIndex + ".sol";
         try {
             InputStream fileInputStreamSolution = new FileInputStream(solutionFileName);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStreamSolution);

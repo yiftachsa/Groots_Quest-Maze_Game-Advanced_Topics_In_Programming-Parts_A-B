@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Server configuration class, based on Singleton design pattern
+ */
 public class Configurations{
     private static enum GeneratorType{Empty, Simple ,My}; //TODO: maze generator factory
     private static enum SolverType{Best, BFS, DFS}; //TODO: maze generator factory
@@ -23,6 +26,9 @@ public class Configurations{
     private Configurations(){
     }
 
+    /**
+     * Initializes this.properties from an existing properties file
+     */
     private static void initializeProperties(){
         try(InputStream inputStream = new FileInputStream(".\\resources\\config.properties")){
             properties = new Properties();
@@ -32,6 +38,11 @@ public class Configurations{
         }
     }
 
+    /**
+     * Returns the value that matches to the given key
+     * @param key - String - the property
+     * @return - String - the value of the property
+     */
     public static String getProperties(String key) {
         if (properties != null){
             return properties.getProperty(key);
@@ -40,6 +51,12 @@ public class Configurations{
         return properties.getProperty(key);
     }
 
+    /**
+     * Getter and Factory combination.
+     * Retries a property from the configuration file and returns the appropriate object that match the property.
+     * @param key - String
+     * @return - ASearchingAlgorithm
+     */
     public static ASearchingAlgorithm getSolver(String key){
         if (properties == null) {
             initializeProperties();
@@ -54,6 +71,12 @@ public class Configurations{
         }
     }
 
+    /**
+     * Getter
+     * Retries a property from the configuration file and returns the appropriate value that match the property.
+     * @param key - String
+     * @return - int
+     */
     public static int getThreadPoolSize(String key) {
         if (properties == null) {
             initializeProperties();
@@ -61,7 +84,12 @@ public class Configurations{
         return Integer.parseInt(properties.getProperty(key));
     }
 
-
+    /**
+     * Getter and Factory combination.
+     * Retries a property from the configuration file and returns the appropriate object that match the property.
+     * @param key - String
+     * @return - AMazeGenerator
+     */
     public static AMazeGenerator getGenerator(String key){
         if (properties == null) {
             initializeProperties();
