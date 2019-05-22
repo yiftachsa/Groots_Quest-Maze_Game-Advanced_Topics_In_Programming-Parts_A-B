@@ -53,15 +53,14 @@ public class Configurations{
 
     /**
      * Getter and Factory combination.
-     * Retries a property from the configuration file and returns the appropriate object that match the property.
-     * @param key - String
+     * Retrieves a property from the configuration file and returns the appropriate object that match the property.
      * @return - ASearchingAlgorithm
      */
-    public static ASearchingAlgorithm getSolver(String key){
+    public static ASearchingAlgorithm getSolver(){
         if (properties == null) {
             initializeProperties();
         }
-        SolverType solverType = SolverType.valueOf(properties.getProperty(key));
+        SolverType solverType = SolverType.valueOf(properties.getProperty("SolverType"));
         if (solverType.equals(SolverType.Best)){
             return new BestFirstSearch();
         }else if (solverType.equals(SolverType.BFS)){
@@ -73,28 +72,26 @@ public class Configurations{
 
     /**
      * Getter
-     * Retries a property from the configuration file and returns the appropriate value that match the property.
-     * @param key - String
+     * Retrieves a property from the configuration file and returns the appropriate value that match the property.
      * @return - int
      */
-    public static int getThreadPoolSize(String key) {
+    public static int getThreadPoolSize() {
         if (properties == null) {
             initializeProperties();
         }
-        return Integer.parseInt(properties.getProperty(key));
+        return Integer.parseInt(properties.getProperty("ThreadPoolSize"));
     }
 
     /**
      * Getter and Factory combination.
-     * Retries a property from the configuration file and returns the appropriate object that match the property.
-     * @param key - String
+     * Retrieves a property from the configuration file and returns the appropriate object that match the property.
      * @return - AMazeGenerator
      */
-    public static AMazeGenerator getGenerator(String key){
+    public static AMazeGenerator getGenerator(){
         if (properties == null) {
             initializeProperties();
         }
-        GeneratorType generatorType = GeneratorType.valueOf(properties.getProperty(key));
+        GeneratorType generatorType = GeneratorType.valueOf(properties.getProperty("GeneratorType"));
         if (generatorType.equals(GeneratorType.My)){
             return new MyMazeGenerator();
         }else if (generatorType.equals(GeneratorType.Simple)){

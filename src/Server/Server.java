@@ -48,7 +48,7 @@ public class Server {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             serverSocket.setSoTimeout(listeningInterval);
-            int threadPoolSize = Configurations.getThreadPoolSize("ThreadPoolSize");
+            int threadPoolSize = Configurations.getThreadPoolSize();
             executor = Executors.newFixedThreadPool(threadPoolSize);
             //LOG.info(String.format("Server starter at %s!", serverSocket));
             //LOG.info(String.format("Server's Strategy: %s", serverStrategy.getClass().getSimpleName()));

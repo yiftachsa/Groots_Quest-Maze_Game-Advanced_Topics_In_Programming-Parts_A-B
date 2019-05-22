@@ -11,12 +11,14 @@ import algorithms.search.Solution;
 import java.io.*;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ServerStrategySolveSearchProblem implements IServerStrategy {
 
-    private static int fileIndex = 0;
+    private static volatile AtomicInteger fileIndex = new AtomicInteger(0);// = 0;
     //TODO: Change to ConcurrentHashMap or to SynchronizedHashMap or to SynchronizedMap
-    private static HashMap<Integer,Integer> previouslySolved= new HashMap<>();
+    private static ConcurrentHashMap<Integer,Integer> previouslySolved= new ConcurrentHashMap<>();
 
     /**
      * Receives a maze from client, Solves it and returns the solution
@@ -49,7 +51,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
             } else {
                 //Generate new solution
                 SearchableMaze searchableClientMaze = new SearchableMaze(clientMaze);
-                ASearchingAlgorithm searchingAlgorithm = Configurations.getSolver("SolverType");
+                ASearchingAlgorithm searchingAlgorithm = Configurations.getSolver();
                 Solution newSolution = searchingAlgorithm.solve(searchableClientMaze);
                 toClient.writeObject(newSolution);
 
@@ -57,8 +59,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                 String tempDirectoryPath = System.getProperty("java.io.tmpdir");
                 //String mazeFileName = tempDirectoryPath + "\\Maze" + fileIndex + ".maze"; //TODO:Path
                 String solutionFileName = tempDirectoryPath + "\\Solution" + fileIndex + ".sol"; //TODO:Path
-                previouslySolved.put(key,fileIndex);
-                fileIndex++;
+                previouslySolved.put(key,fileIndex.getAndIncrement());
                 //saveMazeToFile(decompressedSearchProblem, mazeFileName);
                 saveSolutionToFile(newSolution, solutionFileName);
             }
