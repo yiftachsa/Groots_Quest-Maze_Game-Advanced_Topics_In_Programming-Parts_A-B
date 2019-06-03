@@ -223,7 +223,8 @@ public class Maze implements Serializable {
      */
     public void setStartPosition(Position startPosition) {
         if (startPosition.getRowIndex() >= 0 && startPosition.getRowIndex() < this.maze.length && startPosition.getColumnIndex() >= 0 && startPosition.getColumnIndex() < this.maze[0].length) {
-            this.startPosition = startPosition;
+            this.startPosition.setX(startPosition.getRowIndex());
+            this.startPosition.setY(startPosition.getColumnIndex());
         }
     }
 
@@ -233,7 +234,8 @@ public class Maze implements Serializable {
      */
     public void setGoalPosition(Position goalPosition) {
         if (goalPosition.getRowIndex() >= 0 && goalPosition.getRowIndex() < this.maze.length && goalPosition.getColumnIndex() >= 0 && goalPosition.getColumnIndex() < this.maze[0].length) {
-            this.goalPosition = goalPosition;
+            this.goalPosition.setX(goalPosition.getRowIndex());
+            this.goalPosition.setY(goalPosition.getColumnIndex());
         }
     }
 
