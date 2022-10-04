@@ -1,4 +1,4 @@
-# Advanced Topics in Programming - Maze Game - Groot's Quest
+# Advanced Topics in Programming - Maze Game - Groot's Quest Parts A&B
 
 This repository includes the **first two parts** of the final coding project created as part of the Advanced Topics In Programming course at the Ben-Gurion University of the Negev.
 
