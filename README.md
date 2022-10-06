@@ -47,3 +47,8 @@ Using the GUI the user can create a new maze, save the current state of the game
 
  
 We also used Maven with Log4j2 library;indications are written to the log file such as valid input, calling to the server, details about the solution, etc..
+
+
+<p align="center">
+<img src="https://in.bgu.ac.il/marketing/DocLib/Pages/graphics/heb-en-arabic-logo-small.png">
+</p>
